@@ -1,0 +1,30 @@
+{
+    "snapshots": [
+        {
+            "timestamp": "string",
+            "devices": {
+                "deviceid_1": {
+                    "device_name": "string",
+                    "room": "optional string",
+                    "state": {
+                        "on": "boolean",
+                        "other_attrs": {
+                            "bri": "int",
+                            "hue": "int",
+                            "sat": "int",
+                            "effect": "string"
+                        }
+                    },
+                    "meta_data": {
+                        "type": "string",
+                        "modelid": "string",
+                        "uniqueid(MAC)": "string"
+                    }
+                },
+                "devicei_2": {
+                    ...
+                }
+            }
+        }
+    ]
+}
