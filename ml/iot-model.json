@@ -2,6 +2,7 @@
     "snapshots": [
         {
             "timestamp": "string",
+            "location_state": "home|away",
             "devices": {
                 "deviceid_1": {
                     "device_name": "string",
