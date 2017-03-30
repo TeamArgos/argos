@@ -6,8 +6,8 @@ var argv = require("minimist")(process.argv.slice(-2));
 
 if (argv.d || argv.dev) process.env.dev = true;
 
-var DeviceService = require('./devices/device-service');
-var ds = new DeviceService();
+var config = require("./utils/conf-mgr");
+config.startup();
 
 var device_libs = {
 	"hue": require('./devices/hue-bridge')
@@ -23,7 +23,4 @@ let port = 8080;
 // Start express app
 app.listen(port, () => {
 	console.log("Listening on " + port);
-	ds.discover().then((device_ids) => {
-		console.log(device_ids);
-	});
-})
+});

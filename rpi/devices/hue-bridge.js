@@ -37,40 +37,71 @@ discovery.dev = function() {
             make: module.exports.make,
             description: "Hue Light Bridge",
             ip: "127.0.0.1",
-            id: -1
+            id: -1,
+            user: "newdeveloper"
         }
         resolve([bridge]);
     })
 }
 
-function saveHubCreds(username, hubId, hubIp) {
+function saveHubCreds(username, hubId) {
     var creds = {
         username: username,
-        hubId: hubId,
-        hubIp: hubIp
     }
     config.saveCredentials(hubId, creds, "bridge", "hue");
 }
 
 function getUser(hub) {
     return new Promise((resolve, reject) => {
-        var uid = config.getCredentials(hub.id, "bridge", "hue");
-        if (!uid) {
-            createUser(hub.ip, hub.id).then(u => resolve(u));
+        if (hub.user) {
+            resolve(hub.user);
         } else {
-            resolve(uid);
+            var uid = config.getCredentials(hub.id, "bridge", "hue");
+            if (!uid) {
+                createUser(hub.ip, hub.id).then(u => {
+                    resolve(u);
+                });
+            } else {
+                resolve(uid);
+            }
         }
     })
-    return uid;
+}
+
+function getDevices(url) {
+    var types = ["lights"];
+    return new Promise((resolve, reject) => {
+        request.get(url, (err, res, body) => {
+            body = JSON.parse(body);
+            var devices = {};
+            for (let val of types) {
+                devices[val] = body[val];
+            }
+            resolve(devices);
+        })
+    });
+}
+
+function getBridgeInfo(b) {
+    return new Promise((resolve, reject) => {
+        getUser(b).then(uid => {
+            b.user = uid;
+            b.url = `http://${b.ip}/api/${uid}`;
+            getDevices(b.url).then((devices) => {
+                b.devices = devices;
+                resolve(b);
+            })
+        })
+    })
 }
 
 function createUser(ip, hubid) {
     var url = `http://${ip}/api`;
     return new Promise((resolve, reject) => {
-        request.post(url, {json: {"devicetype": "my_hue_app#iphone peter"}}, (err, res, body) => {
+        request.post(url, {json: {"devicetype": "argos#rpi"}}, (err, res, body) => {
             for (let u of body) {
                 if (u.success) {
-                    saveHubCreds(u.success.username, hubid, ip)
+                    saveHubCreds(u.success.username, hubid)
                     resolve(u.success.username);
                 } else {
                     console.log("Failed to create a user for hub: " + ip);
@@ -81,13 +112,56 @@ function createUser(ip, hubid) {
     })
 }
 
+function flatten(bridges) {
+    var dev = {};
+    bridges.forEach((b) => {
+        for (var key in b.devices) {
+            for (var did in b.devices[key]) {
+                var device = b.devices[key][did];
+                device.id = did;
+                device.bridge = {
+                    make: b.make,
+                    type: b.type,
+                    url: b.url,
+                    id: b.id,
+                    user: b.user
+                };
+                device.make = "hue";
+                device.type = key;
+                dev[device.uniqueid] = device;
+            }
+        }
+    })
+    return dev;
+}
+
 module.exports.discover = function() {
     return new Promise((resolve, reject) => {
         discovery[env]().then((bridges) => {
-            var promises = bridges.map((b) => getUser(b));
-            Promise.all(promises).then((users) => {
-                resolve(bridges);
+            var promises = bridges.map((b) => getBridgeInfo(b));
+            Promise.all(promises).then((updated) => {
+                resolve(flatten(updated));
             })
+        });
+    })
+}
+
+module.exports.toggleDevice = function(device) {
+    switch (device.type) {
+        case "lights":
+            return toggleLight(device);
+        default: break;
+    }
+    return undefined;
+}
+
+function toggleLight(light) {
+    return new Promise((resolve, reject) => {
+        var url = `${light.bridge.url}/lights/${light.id}/state`;
+        var on = light.state.on;
+        light.state.on = !on;
+        request.put(url, {json:{on: !on}}, function(err, res, body) {
+            resolve(body);
         });
     })
 }
