@@ -10,8 +10,8 @@ if (!exports.loaded) {
 }
 
 exports.startup = function() {
-    if (!fs.existsSync(config.local_directory)){
-        fs.mkdirSync(config.local_directory);
+    if (!fs.existsSync(userConfig)){
+        fs.mkdirSync(userConfig);
     }
 }
 
