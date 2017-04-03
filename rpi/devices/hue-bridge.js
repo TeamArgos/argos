@@ -1,5 +1,4 @@
 var request = require('request');
-var Promise = require('promise');
 var baseUrl = 'https://www.meethue.com/api';
 var config = require('../utils/conf-mgr');
 
@@ -56,7 +55,7 @@ function getUser(hub) {
         if (hub.user) {
             resolve(hub.user);
         } else {
-            var uid = config.getCredentials(hub.id, "bridge", "hue");
+            var uid = config.getCredentials(hub.id, "bridge", "hue").username;
             if (!uid) {
                 createUser(hub.ip, hub.id).then(u => {
                     resolve(u);
@@ -115,20 +114,22 @@ function createUser(ip, hubid) {
 function flatten(bridges) {
     var dev = {};
     bridges.forEach((b) => {
-        for (var key in b.devices) {
-            for (var did in b.devices[key]) {
-                var device = b.devices[key][did];
-                device.id = did;
-                device.bridge = {
-                    make: b.make,
-                    type: b.type,
-                    url: b.url,
-                    id: b.id,
-                    user: b.user
-                };
-                device.make = "hue";
-                device.type = key;
-                dev[device.uniqueid] = device;
+        if (b) {
+            for (var key in b.devices) {
+                for (var did in b.devices[key]) {
+                    var device = b.devices[key][did];
+                    device.id = did;
+                    device.bridge = {
+                        make: b.make,
+                        type: b.type,
+                        url: b.url,
+                        id: b.id,
+                        user: b.user
+                    };
+                    device.make = "hue";
+                    device.type = key;
+                    dev[device.uniqueid] = device;
+                }
             }
         }
     })
@@ -141,27 +142,37 @@ module.exports.discover = function() {
             var promises = bridges.map((b) => getBridgeInfo(b));
             Promise.all(promises).then((updated) => {
                 resolve(flatten(updated));
+            }).catch((err) => {
+                console.log(err);
             })
         });
     })
 }
 
-module.exports.toggleDevice = function(device) {
-    switch (device.type) {
-        case "lights":
-            return toggleLight(device);
-        default: break;
-    }
-    return undefined;
+module.exports.isOn = function(device) {
+    return device.state.on;
 }
 
-function toggleLight(light) {
+module.exports.setState = function(device, state) {
+    switch (device.type) {
+        case "lights":
+            return setLightState(device, state);
+        default: break;
+    }
+    return new Promise((resolve, reject) => reject("State cannot be set"));
+}
+
+module.exports.getState = function(device) {
+    return device.state;
+}
+
+function setLightState(light, on) {
     return new Promise((resolve, reject) => {
         var url = `${light.bridge.url}/lights/${light.id}/state`;
-        var on = light.state.on;
-        light.state.on = !on;
-        request.put(url, {json:{on: !on}}, function(err, res, body) {
+
+        request.put(url, {json:{on: on}}, function(err, res, body) {
+            light.state.on = on;
             resolve(body);
         });
-    })
+    });
 }

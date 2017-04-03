@@ -1,8 +1,12 @@
 var DeviceService = require('../devices/device-service');
 var ds = new DeviceService();
-ds.discover().then((device_ids) => {});
 
+
+/**
+ * Endpoints for the argos hardware device.
+ */
 module.exports = function(app) {
+	// Important that 
 	app.post("/update_ip", function(req, res) {
 		res.send(req.body.ip);
 		console.log("Updated IP");
@@ -28,5 +32,21 @@ module.exports = function(app) {
 		}).catch((err) => {
 			res.send(err);
 		})
+	})
+
+	app.post("/set_state", function(req, res) {
+		var on = req.body.on;
+		var id = req.body.id;
+		ds.setState(id, on).then((body) => {
+			res.json(body);
+		}).catch((err) => {
+			res.status(400).send("State could not be set");
+		});
+	})
+
+	app.post("/discover", function(req, res) {
+		ds.discover().then((body) => {
+			res.json(body);
+		});
 	})
 }

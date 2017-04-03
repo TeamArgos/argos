@@ -1,9 +1,10 @@
-var Promise = require('promise');
-
 var device_apis = {
     "hue": require('./hue-bridge')
 }
 
+/**
+ * A facade to unify APIs for different manufacturers
+ */
 function DeviceService() {
     this.devices = {};
 }
@@ -24,14 +25,36 @@ DeviceService.prototype.discover = function() {
             }
             resolve(this.devices);
         })
-
     })
 }
 
+/**
+ * Toggles the state (on/off) of device with id `id`
+ * @param id A device identifier
+ * @returns a promise which resolves once a device change state has been
+ *          registered
+ */
 DeviceService.prototype.toggleDevice = function(id) {
-    var device = this.devices[id];
+    var device = this.getDevice(id);
     var api = device_apis[device.make];
-    return api.toggleDevice(device);
+    var state = !api.isOn(device);
+    return api.setState(device, state);
+}
+
+DeviceService.prototype.setState = function(id, state) {
+    var device = this.getDevice(id);
+    var api = device_apis[device.make];
+    return api.setState(device, state);
+}
+
+DeviceService.prototype.getDevice = function(id) {
+    return this.devices[id];
+}
+
+DeviceService.prototype.getState = function(id) {
+    var d = this.getDevice(id);
+    var api = device_apis[d.make];
+    return api.getState(d);
 }
 
 module.exports = DeviceService;

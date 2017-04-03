@@ -4,6 +4,9 @@ var bodyParser = require("body-parser");
 var app = express();
 var argv = require("minimist")(process.argv.slice(-2));
 
+var JobService = require('./services/job-service');
+var js = new JobService();
+
 if (argv.d || argv.dev) process.env.dev = true;
 
 var config = require("./utils/conf-mgr");
@@ -23,4 +26,6 @@ let port = 8080;
 // Start express app
 app.listen(port, () => {
 	console.log("Listening on " + port);
+	js.runSetStateJob();
+	js.runDiscoverJob();
 });
