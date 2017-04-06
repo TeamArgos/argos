@@ -1,7 +1,6 @@
 var DeviceService = require('../devices/device-service');
 var ds = new DeviceService();
 
-
 /**
  * Endpoints for the argos hardware device.
  */
@@ -35,6 +34,7 @@ module.exports = function(app) {
 	})
 
 	app.post("/set_state", function(req, res) {
+		console.log("test")
 		var on = req.body.on;
 		var id = req.body.id;
 		ds.setState(id, on).then((body) => {
