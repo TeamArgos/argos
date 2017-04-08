@@ -15,6 +15,9 @@ if (argv.d || argv.dev) process.env.dev = true;
 
 var port = 80;
 if (argv.d) port = 8000;
+
+process.env.PORT = port;
+
 app.use(bodyParser.json());
 
 
