@@ -1,3 +1,5 @@
+var Webapi = require("../services/webapi-service");
+
 var device_apis = {
     "hue": require('./hue-bridge')
 }
@@ -7,6 +9,7 @@ var device_apis = {
  */
 function DeviceService() {
     this.devices = {};
+    this.api = new Webapi();
 }
 
 /**
@@ -21,6 +24,7 @@ DeviceService.prototype.discover = function() {
             for(let make of device_arr) {
                 for (let id of Object.keys(make)) {
                     this.devices[id] = make[id];
+                    this.api.notifyState(id, make[id]);
                 }
             }
             resolve(this.devices);

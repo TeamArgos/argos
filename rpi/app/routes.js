@@ -1,7 +1,6 @@
 var DeviceService = require('../devices/device-service');
 var ds = new DeviceService();
 
-
 /**
  * Endpoints for the argos hardware device.
  */

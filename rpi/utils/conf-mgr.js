@@ -3,10 +3,30 @@ var os = require('os');
 var defaultConfig = __dirname + "/defaults.json";
 var config = require(defaultConfig);
 var userConfig = `${os.homedir()}/${config.local_directory}/settings.json`;
+var crypto = require('crypto')
+var hash = crypto.createHash('sha256');
 
 // Only reload if this module has not yet been cached
 if (!exports.loaded) {
     loadConfig();
+    config.uid = getUserId();
+}
+
+function getUserId() {
+    var id = "";
+    var interfaces = os.networkInterfaces();
+    for (var i in interfaces) {
+        for (let n of interfaces[i]) {
+            if (!n.internal && n.family === "IPv4") {
+                id = n.mac;
+            }
+        }
+    }
+    return hash.update(id).digest('hex');
+}
+
+exports.getUid = function() {
+    return config.uid;
 }
 
 exports.startup = function() {
@@ -60,7 +80,6 @@ function addConfig(str, val) {
 function getConfig(str) {
     var levels = str.split(".");
     var obj = config;
-    console.log(config);
     try {
         for (var i = 0; i < levels.length; i++) {
             obj = obj[levels[i]];

@@ -1,2 +1,7 @@
 **/node_modules
 **/.*.swp
+**/keystore
+!**/keystore/sample-admin-key.json
+!**/keystore/sample-client-key.json
+**/*.iml
+**/*.idea

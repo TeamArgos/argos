@@ -10,9 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "basic-auth": "^1.1.0",
+    "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "firebase": "^3.7.5",
+    "firebase-admin": "^4.2.0",
     "minimist": "^1.2.0",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "socket.io": "^1.7.3"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
