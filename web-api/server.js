@@ -13,9 +13,7 @@ var ds = new DeviceService(hs);
 
 if (argv.d || argv.dev) process.env.dev = true;
 
-var port = 8080;
-
-process.env.PORT = port;
+var port = process.env.PORT || 8080;
 
 app.use(bodyParser.json());
 
