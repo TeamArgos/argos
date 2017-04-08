@@ -80,7 +80,6 @@ function addConfig(str, val) {
 function getConfig(str) {
     var levels = str.split(".");
     var obj = config;
-    console.log(config);
     try {
         for (var i = 0; i < levels.length; i++) {
             obj = obj[levels[i]];

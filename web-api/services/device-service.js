@@ -27,6 +27,21 @@ DeviceService.prototype.notifyState = function(deviceId, uid, state) {
     })
 }
 
+DeviceService.prototype.getDevices = function(uid) {
+    return new Promise((resolve, reject) => {
+        this.devices.once("value").then((snapshot) => {
+            var obj = snapshot.val();
+            var d = {};
+            for (var key in obj) {
+                for (var deviceId in obj[key]) {
+                    d[deviceId] = obj[key][deviceId];
+                }
+            }
+            resolve(d);
+        })
+    })
+}
+
 /**
  * Sets the state of device with `deviceId` for user with `uid`
  */

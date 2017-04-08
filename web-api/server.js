@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var firebase = require("./services/firebase-service");
 var HomeService = require("./services/home-service");
-var DeviceService = require("./services/device-data");
+var DeviceService = require("./services/device-service");
 var argv = require("minimist")(process.argv.slice(-2));
 
 var app = express();
