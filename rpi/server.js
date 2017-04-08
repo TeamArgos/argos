@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 // Adds the routes in routes.js to our express app
 require("./app/routes")(app);
 
-let port = 8080;
+let port = 8000;
 
 // Start express app
 app.listen(port, () => {

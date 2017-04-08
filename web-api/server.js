@@ -13,8 +13,7 @@ var ds = new DeviceService(hs);
 
 if (argv.d || argv.dev) process.env.dev = true;
 
-var port = 80;
-if (argv.d) port = 8000;
+var port = 8080;
 
 process.env.PORT = port;
 
