@@ -13,7 +13,8 @@ var ds = new DeviceService(hs);
 
 if (argv.d || argv.dev) process.env.dev = true;
 
-let port = 8000;
+var port = 80;
+if (argv.d) port = 8000;
 app.use(bodyParser.json());
 
 
