@@ -10,8 +10,7 @@ module.exports = function(app) {
 		res.send(req.body.ip);
 		console.log("Updated IP");
 	})
-
-	app.get("/", function(req, res) {
+app.get("/", function(req, res) {
 		res.send("Hello");
 	})
 

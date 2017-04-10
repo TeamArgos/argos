@@ -6,6 +6,7 @@ function DeviceService(homeService, config) {
     this.db = this.fs.db;
     this.devices = this.db.ref().child("devices");
     this.deviceHistory = this.db.ref().child("device-history");
+    this.fulcrumMappings = this.db.ref().child("fulcrum-mappings");
 }
 
 /**
@@ -28,14 +29,41 @@ DeviceService.prototype.notifyState = function(deviceId, uid, state) {
     })
 }
 
+DeviceService.prototype.notifyStateBulk = function(devices, fulcrumId) {
+    return new Promise((resolve, reject) => {
+        var ref = this.devices.child(fulcrumId);
+        var promises = [];
+        ref.once("value").then(snapshot => {
+            var currDevices = snapshot.val();
+            for (var k in currDevices) {
+                var s = currDevices[k];
+                if (!(k in devices)) {
+                    s.reachable = false;
+                    ref.child(k).set(s);
+                } else {
+                    promises.push(this.notifyState(k, fulcrumId, s));
+                }
+            }
+
+            Promise.all(promises).then(res => {
+                resolve(true);
+            }).catch(err => {
+                reject(err);
+            })
+        })
+    })
+}
+
 DeviceService.prototype.getDevices = function(uid) {
     return new Promise((resolve, reject) => {
-        this.devices.once("value").then((snapshot) => {
-            var obj = snapshot.val();
+        var promises = [this.devices.once("value"), this.fulcrumMappings.child(uid).once("value")];
+        Promise.all(promises).then(responses => {
+            var deviceList = responses[0].val();
+            var mappings = responses[1].val();
             var d = {};
-            for (var key in obj) {
-                for (var deviceId in obj[key]) {
-                    d[deviceId] = obj[key][deviceId];
+            for (var key in mappings) {
+                for (var deviceId in deviceList[key]) {
+                    d[deviceId] = deviceList[key][deviceId];
                 }
             }
             resolve(d);

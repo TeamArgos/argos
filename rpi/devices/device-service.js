@@ -24,10 +24,14 @@ DeviceService.prototype.discover = function() {
             for(let make of device_arr) {
                 for (let id of Object.keys(make)) {
                     this.devices[id] = make[id];
-                    this.api.notifyState(id, make[id]);
                 }
             }
-            resolve(this.devices);
+            this.api.notifyStateBatch(this.devices).then(() => {
+                resolve(this.devices);
+            }).catch(err => {
+                console.log(err);
+                reject(err);
+            });
         })
     })
 }

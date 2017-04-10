@@ -14,12 +14,22 @@ module.exports = function(app, ds, config) {
         var did = req.params.deviceId;
         var fulcrumId = req.params.fulcrumId;
         var state = req.body.state;
-        ds.notifyState(did, fulcrumId, state).then(() => {
-            res.send("It worked buddy!");
+        ds.notifyState(did, fulcrumId, state).then((res) => {
+            res.send(res);
         }).catch((err) => {
             console.log(err);
-            res.send("It didnt work buddy :(")
+            res.status(500).send(err.toString());
         });
+    })
+
+    app.put("/notify_state/:fulcrumId", (req, res) => {
+        var devices = req.body;
+        ds.notifyStateBulk(devices, req.params.fulcrumId).then(success => {
+            res.send("Success");
+        }).catch(err => {
+            console.log(err)
+            res.status(500).send(err);
+        })
     })
 
     app.post("/set_state/:uid/:deviceId", (req, res) => {
@@ -36,7 +46,7 @@ module.exports = function(app, ds, config) {
             res.json(devices);
         }).catch((err) => {
             console.log(err);
-            res.err(err);
+            res.status(500).send(err);
         });
     });
 
