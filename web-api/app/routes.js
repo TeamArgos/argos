@@ -1,9 +1,11 @@
 var DeviceService = require("../services/device-service");
 var UserService = require("../services/user-service");
-var us = new UserService();
 var auth = require("basic-auth");
 
-module.exports = function(app, ds) {
+module.exports = function(app, ds, config) {
+
+    var us = new UserService(config);
+
     app.get("/health", (req, res) => {
         res.send("Success");
     })

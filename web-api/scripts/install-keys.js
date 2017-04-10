@@ -1,6 +1,4 @@
-var AWS = require("aws-sdk");
 var fs = require("fs");
-var s3 = new AWS.S3();
 
 var bucket = "argos-capstone";
 var keys = ["admin-key.json", "client-key.json"];
@@ -20,10 +18,10 @@ var promises = keys.map((k) => {
 
         if (data) {
             var noExt = k.split(".")[0];
-            process.env.noExt
-            fs.writeFile(`${ks}/${k}`, data.Body, (err) => {
-                if (err) console.log(err);
-            });
+            process.env[noExt] = String(data.Body);
+            //fs.writeFile(`${ks}/${k}`, data.Body, (err) => {
+                //if (err) console.log(err);
+            //});
         }
     });
 })

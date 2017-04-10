@@ -1,8 +1,9 @@
 var fb = require("./firebase-service");
 
-function DeviceService(homeService) {
-    this.db = fb.db;
+function DeviceService(homeService, config) {
     this.hs = homeService;
+    this.fs = new fb(config);
+    this.db = this.fs.db;
     this.devices = this.db.ref().child("devices");
     this.deviceHistory = this.db.ref().child("device-history");
 }

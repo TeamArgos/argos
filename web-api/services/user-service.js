@@ -2,10 +2,11 @@ var request = require('request');
 var firebase = require("./firebase-service");
 
 
-var UserService = function() {
-    this.db = firebase.db;
-    this.auth = firebase.auth;
-    this.signIn = firebase.signIn;
+var UserService = function(config) {
+    this.fs = new firebase(config);
+    this.db = this.fs.db;
+    this.auth = this.fs.auth;
+    this.signIn = this.fs.signIn;
     this.fulcrumMappings = this.db.ref().child("fulcrum-mappings");
 }
 

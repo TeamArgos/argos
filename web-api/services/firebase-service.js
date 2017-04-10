@@ -1,16 +1,19 @@
 var firebaseAdmin = require("firebase-admin");
 var firebase = require("firebase");
-var config = require("../config.json");
-var serviceAccount = require(`../${config.firebase_admin_auth}`);
-var clientConfig = require(`../${config.firebase_client_auth}`)
 
-module.exports.db = firebaseAdmin.database();
-module.exports.auth = firebaseAdmin.auth();
-module.exports.signIn = firebase.auth();
+var FirebaseService = function(config) {
+    if (firebase.apps.length === 0)
+        firebase.initializeApp(config.client_key);
 
-firebase.initializeApp(clientConfig);
+    if (firebaseAdmin.apps.length === 0)
+        firebaseAdmin.initializeApp({
+            credential: firebaseAdmin.credential.cert(config.admin_key),
+            databaseURL: config.database
+        });
 
-firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert(serviceAccount),
-    databaseURL: config.database
-});
+    this.db = firebaseAdmin.database();
+    this.auth = firebaseAdmin.auth();
+    this.signIn = firebase.auth();
+}
+
+module.exports = FirebaseService;
