@@ -1,6 +1,7 @@
 var request = require("request");
 var io = require("socket.io-client");
-var port = 8080;
+var config = require("../utils/conf-mgr");
+var port = 8000;
 var baseUrl = "http://localhost:" + port;
 
 module.exports.listen = function(url, uid) {

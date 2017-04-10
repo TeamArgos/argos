@@ -5,7 +5,7 @@ var config = require('../utils/conf-mgr');
 module.exports.make = "hue";
 
 var discovery = {};
-var env = process.env.dev ? "dev" : "prod";
+var env = process.env.dev || process.env.USE_EMULATOR ? "dev" : "prod";
 
 /**
  * Discovers hue light bridge devices

@@ -10,6 +10,8 @@ var api = new WebApi();
 var js = new JobService();
 
 if (argv.d || argv.dev) process.env.dev = true;
+if (argv.e || argv.emulator) process.env.USE_EMULATOR = true;
+if (argv.b) process.env.PROD_BACKEND = true;
 
 var config = require("./utils/conf-mgr");
 config.startup();

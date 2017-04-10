@@ -49,6 +49,10 @@ DeviceService.prototype.toggleDevice = function(id) {
     return api.setState(device, state);
 }
 
+/**
+ * Sets the state of a device with `id`. If state is true, turns
+ * device on. Else, turns device off
+ */
 DeviceService.prototype.setState = function(id, state) {
     var device = this.getDevice(id);
     var api = device_apis[device.make];

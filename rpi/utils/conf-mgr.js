@@ -77,7 +77,7 @@ function addConfig(str, val) {
     writeConfig();
 }
 
-function getConfig(str) {
+module.exports.getConfig = function(str) {
     var levels = str.split(".");
     var obj = config;
     try {
@@ -102,6 +102,5 @@ exports.saveCredentials = function(id, credentials, type, make) {
 }
 
 exports.getCredentials = function(id, type, make) {
-    return getConfig(`devices.${make}.${type}.credentials.${id}`);
+    return exports.getConfig(`devices.${make}.${type}.credentials.${id}`);
 }
-
