@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "gulp run-dev",
-    "install": "node scripts/install-keys.js"
+    "dev": "gulp run-dev"
   },
   "author": "",
   "license": "ISC",
