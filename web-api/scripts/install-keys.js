@@ -13,7 +13,7 @@ keys.forEach((k) => {
         if (err) console.log(err);
 
         if (data) {
-            fs.writeFile(`./keystore/${k}`, data.Body, (err) => {
+            fs.writeFile(`${__dirname}/../keystore/${k}`, data.Body, (err) => {
                 if (err) console.log(err);
             });
         }
