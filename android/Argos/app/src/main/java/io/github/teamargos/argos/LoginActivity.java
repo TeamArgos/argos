@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +34,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,13 +58,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -68,6 +74,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Check to see if user is already signed in
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.user_id), 0);
+        if (prefs.contains(getString(R.string.user_id))) {
+            Intent dashboard = new Intent(this, DashboardActivity.class);
+            startActivity(dashboard);
+        }
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -310,24 +324,79 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
+            String urlString = getString(R.string.api_base_url) + "sign_in";
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+
+            String data = null;
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+
+                URL url = new URL(urlString);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+
+
+                byte[] auth = (mEmail + ":" + mPassword).getBytes("UTF-8");
+
+                String encoded = new String(Base64.encode(auth, 0));
+                urlConnection.setRequestProperty("Authorization", "Basic "+ encoded);
+
+                urlConnection.connect();
+
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    Log.d("MAIN", "Input stream is null");
+                    return false;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line = reader.readLine();
+                while (line != null) {
+                    buffer.append(line + "\n");
+                    line = reader.readLine();
+                }
+
+                if (buffer.length() == 0) {
+                    Log.d("MAIN", "Buffer length is 0");
+                    return false;
+                }
+                data = buffer.toString();
+            }
+            catch (IOException e) {
+                Log.d("MAIN", e.toString());
                 return false;
             }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+            finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    }
+                    catch (IOException e){
+                    }
                 }
             }
 
-            // TODO: register the new account here.
+
+            try {
+                JSONObject json = new JSONObject(data);
+                String uid = json.getString("uid");
+
+                SharedPreferences prefs = this.context.getSharedPreferences(getString(R.string.user_id), 0);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString(getString(R.string.user_id), uid);
+                editor.commit();
+
+                Log.d("MAIN", uid);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+
             return true;
         }
 

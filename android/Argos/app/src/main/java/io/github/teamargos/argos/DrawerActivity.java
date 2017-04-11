@@ -1,5 +1,8 @@
 package io.github.teamargos.argos;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import static android.R.id.edit;
 
 /**
  * Created by alexb on 4/10/2017.
@@ -26,9 +31,8 @@ public class DrawerActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+    public void setupDrawer() {
         // Setup toolbar
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -53,17 +57,35 @@ public class DrawerActivity extends AppCompatActivity {
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mNavTitles));
         // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(this));
     }
 
     /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+        private Context context;
+
+        public DrawerItemClickListener(Context context) {
+            this.context = context;
+        }
+
         @Override
         /**
          * When a list item is clicked this function will handle it.
          */
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Log.d(TAG , ((TextView)view).getText().toString());
+            String selected = ((TextView)view).getText().toString().toLowerCase();
+
+            switch (selected){
+                case "sign out":
+                    SharedPreferences prefs = this.context.getSharedPreferences(getString(R.string.user_id), 0);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.remove(getString(R.string.user_id));
+                    editor.commit();
+
+                    Intent signOut = new Intent(this.context, LoginActivity.class);
+                    startActivity(signOut);
+            }
         }
     }
 }
