@@ -24,10 +24,14 @@ DeviceService.prototype.discover = function() {
             for(let make of device_arr) {
                 for (let id of Object.keys(make)) {
                     this.devices[id] = make[id];
-                    this.api.notifyState(id, make[id]);
                 }
             }
-            resolve(this.devices);
+            this.api.notifyStateBatch(this.devices).then(() => {
+                resolve(this.devices);
+            }).catch(err => {
+                console.log(err);
+                reject(err);
+            });
         })
     })
 }
@@ -45,6 +49,10 @@ DeviceService.prototype.toggleDevice = function(id) {
     return api.setState(device, state);
 }
 
+/**
+ * Sets the state of a device with `id`. If state is true, turns
+ * device on. Else, turns device off
+ */
 DeviceService.prototype.setState = function(id, state) {
     var device = this.getDevice(id);
     var api = device_apis[device.make];

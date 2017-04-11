@@ -2,14 +2,19 @@ var CronJob = require('cron').CronJob;
 var request = require('request');
 
 var JobService = function() {
-    this.port = 8080;
+    this.port = 8000;
     this.baseUrl = "http://localhost"
 }
 
 JobService.prototype.discover = function() {
     return new Promise((resolve, reject) => {
         request.post(`${this.baseUrl}:${this.port}/discover`, (err, res, body) => {
-            resolve(body);
+            if (err) {
+                console.log(err);
+                reject(err);
+            } else {
+                resolve(body);
+            }
         });
     })
 }

@@ -5,7 +5,7 @@ var config = require('../utils/conf-mgr');
 module.exports.make = "hue";
 
 var discovery = {};
-var env = process.env.dev ? "dev" : "prod";
+var env = process.env.dev || process.env.USE_EMULATOR ? "dev" : "prod";
 
 /**
  * Discovers hue light bridge devices
@@ -169,9 +169,17 @@ module.exports.getState = function(device) {
 function setLightState(light, on) {
     return new Promise((resolve, reject) => {
         var url = `${light.bridge.url}/lights/${light.id}/state`;
+        if (typeof on !== "boolean") on = JSON.parse(on);
+        var options = {
+            json: {
+                on: JSON.parse(on)
+            }
+        }
 
-        request.put(url, {json:{on: on}}, function(err, res, body) {
+        request.put(url, options, function(err, res, body) {
             light.state.on = on;
+            if (err) console.log(err);
+            console.log(body);
             resolve(body);
         });
     });

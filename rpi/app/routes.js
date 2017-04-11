@@ -10,8 +10,7 @@ module.exports = function(app) {
 		res.send(req.body.ip);
 		console.log("Updated IP");
 	})
-
-	app.get("/", function(req, res) {
+app.get("/", function(req, res) {
 		res.send("Hello");
 	})
 
@@ -34,7 +33,6 @@ module.exports = function(app) {
 	})
 
 	app.post("/set_state", function(req, res) {
-		console.log("test")
 		var on = req.body.on;
 		var id = req.body.id;
 		ds.setState(id, on).then((body) => {
