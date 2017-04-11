@@ -38,14 +38,16 @@ public class DashboardActivity extends DrawerActivity {
         setContentView(R.layout.activity_dashboard);
 
         setupDrawer();
+
+        getDeviceData(null);
     }
 
-    public void testSignIn(View v) {
-        GetDataTestTask task = new GetDataTestTask();
+    public void getDeviceData(View v) {
+        GetDeviceDataTask task = new GetDeviceDataTask();
         task.execute();
     }
 
-    public class GetDataTestTask extends AsyncTask<String, Void, String> {
+    public class GetDeviceDataTask extends AsyncTask<String, Void, String> {
         private SharedPreferences prefs;
         @Override
         protected void onPreExecute() {
@@ -54,7 +56,8 @@ public class DashboardActivity extends DrawerActivity {
         }
 
         protected String doInBackground(String... params) {
-            String urlString = getString(R.string.api_base_url) + "sign_in";
+            String uid = this.prefs.getString(getString(R.string.user_id), null);
+            String urlString = getString(R.string.api_base_url) + "devices/" + uid;
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
@@ -64,19 +67,12 @@ public class DashboardActivity extends DrawerActivity {
                 URL url = new URL(urlString);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
-
-                // TODO: replace with data from inputs
-                byte[] auth = ("alexbieg95@gmail.com:cooper03").getBytes("UTF-8");
-
-                String encoded = new String(Base64.encode(auth, 0));
-                urlConnection.setRequestProperty("Authorization", "Basic "+ encoded);
-
                 urlConnection.connect();
 
                 InputStream inputStream = urlConnection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
                 if (inputStream == null) {
-                    Log.d("MAIN", "Input stream is null");
+                    Log.d(TAG, "Input stream is null");
                     return null;
                 }
                 reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -88,13 +84,13 @@ public class DashboardActivity extends DrawerActivity {
                 }
 
                 if (buffer.length() == 0) {
-                    Log.d("MAIN", "Buffer length is 0");
+                    Log.d(TAG, "Buffer length is 0");
                     return null;
                 }
                 data = buffer.toString();
             }
             catch (IOException e) {
-                Log.d("MAIN", e.toString());
+                Log.d(TAG, e.toString());
                 return null;
             }
             finally {
@@ -114,19 +110,8 @@ public class DashboardActivity extends DrawerActivity {
         }
 
         protected void onPostExecute(String data) {
-//
-            try {
-                JSONObject json = new JSONObject(data);
-                String uid = json.getString("uid");
-
-                SharedPreferences.Editor editor = this.prefs.edit();
-                editor.putString(getString(R.string.user_id), uid);
-
-                Log.d("MAIN", uid);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
+            // TODO: display the device data
+            Log.d(TAG, data);
         }
     }
 }
