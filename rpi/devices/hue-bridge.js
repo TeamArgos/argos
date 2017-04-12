@@ -179,7 +179,6 @@ function setLightState(light, on) {
         request.put(url, options, function(err, res, body) {
             light.state.on = on;
             if (err) console.log(err);
-            console.log(body);
             resolve(body);
         });
     });

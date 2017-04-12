@@ -14,8 +14,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +30,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import io.github.teamargos.argos.Models.Device;
 
 public class DashboardActivity extends DrawerActivity {
 
@@ -36,8 +44,10 @@ public class DashboardActivity extends DrawerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
         setupDrawer();
+
+//        GridView gv = (GridView) findViewById(R.id.device_grid);
+//        gv.setAdapter();
 
         getDeviceData(null);
     }
@@ -111,6 +121,9 @@ public class DashboardActivity extends DrawerActivity {
 
         protected void onPostExecute(String data) {
             // TODO: display the device data
+            Map<String, Device> devices = new HashMap<>();
+            Gson g = new Gson();
+            devices = g.fromJson(data, new TypeToken<Map<String, Device>>(){}.getType());
             Log.d(TAG, data);
         }
     }

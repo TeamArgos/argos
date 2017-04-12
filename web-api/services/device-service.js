@@ -29,6 +29,7 @@ DeviceService.prototype.notifyState = function(deviceId, uid, state) {
     })
 }
 
+// TODO: Fix issue where new devices aren't added
 DeviceService.prototype.notifyStateBulk = function(devices, fulcrumId) {
     return new Promise((resolve, reject) => {
         var ref = this.devices.child(fulcrumId);
@@ -42,8 +43,12 @@ DeviceService.prototype.notifyStateBulk = function(devices, fulcrumId) {
                     ref.child(k).set(s);
                 } else {
                     promises.push(this.notifyState(k, fulcrumId, s));
+                    delete devices[k];
                 }
             }
+
+            for (var remaining in devices) 
+                promises.push(this.notifyState(remaining, fulcrumId, devices[remaining]));
 
             Promise.all(promises).then(res => {
                 resolve(true);
