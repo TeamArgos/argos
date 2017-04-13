@@ -39,7 +39,7 @@ DeviceService.prototype.notifyStateBulk = function(devices, fulcrumId) {
             for (var k in currDevices) {
                 var s = currDevices[k];
                 if (!(k in devices)) {
-                    s.reachable = false;
+                    s.state.reachable = false;
                     ref.child(k).set(s);
                 } else {
                     promises.push(this.notifyState(k, fulcrumId, devices[k]));

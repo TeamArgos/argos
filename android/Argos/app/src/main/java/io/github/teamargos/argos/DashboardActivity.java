@@ -25,6 +25,7 @@ import java.util.Map;
 import io.github.teamargos.argos.Models.Device;
 import io.github.teamargos.argos.Adapters.DeviceGridAdapter;
 import io.github.teamargos.argos.Models.DeviceStateChange;
+import io.github.teamargos.argos.Models.StateChangeResponse;
 import io.github.teamargos.argos.Utils.HttpUtils;
 
 public class DashboardActivity extends DrawerActivity {
@@ -114,8 +115,14 @@ public class DashboardActivity extends DrawerActivity {
         }
 
         protected void onPostExecute(String data) {
-            this.device.state.on = !this.device.state.on;
-            refreshGrid();
+            StateChangeResponse res = new Gson().fromJson(data, StateChangeResponse.class);
+            if (res.success) {
+                this.device.state.on = !this.device.state.on;
+                refreshGrid();
+            } else {
+                this.device.state.reachable = false;
+                refreshGrid();
+            }
         }
     }
 }

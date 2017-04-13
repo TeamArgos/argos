@@ -53,12 +53,11 @@ public class DeviceGridAdapter extends BaseAdapter {
         Device device = this.devices.get(position);
         TextView name = (TextView) deviceView.findViewById(R.id.device_name);
         name.setText(device.name);
-        Drawable d;
-        if (device.state.on) {
+        Drawable d = ContextCompat.getDrawable(this.context, R.drawable.device_tile_off);
+        if (device.state.reachable && device.state.on) {
             d = ContextCompat.getDrawable(this.context, R.drawable.device_tile_on);
-        } else {
-            d = ContextCompat.getDrawable(this.context, R.drawable.device_tile_off);
         }
+
         deviceView.setBackground(d);
         return deviceView;
     }

@@ -36,7 +36,15 @@ app.get("/", function(req, res) {
 		var on = req.body.on;
 		var id = req.body.id;
 		ds.setState(id, on).then((body) => {
-			res.json(body);
+			var obj = {};
+			if (body) {
+				if (body[0]) {
+					obj.success = true;
+				}
+			} else {
+				obj.success = false;
+			}
+			res.json(obj);
 		}).catch((err) => {
 			res.status(400).send("State could not be set");
 		});

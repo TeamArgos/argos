@@ -57,8 +57,12 @@ DeviceService.prototype.toggleDevice = function(id) {
  */
 DeviceService.prototype.setState = function(id, state) {
     var device = this.getDevice(id);
-    var api = device_apis[device.make];
-    return api.setState(device, state);
+    if (device) {
+        var api = device_apis[device.make];
+        return api.setState(device, state);
+    } else {
+        return new Promise((resolve, reject) => resolve(undefined));
+    }
 }
 
 DeviceService.prototype.getDevice = function(id) {

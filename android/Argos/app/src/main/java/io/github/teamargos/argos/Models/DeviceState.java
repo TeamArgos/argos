@@ -6,4 +6,5 @@ package io.github.teamargos.argos.Models;
 
 public class DeviceState {
     public boolean on;
+    public boolean reachable;
 }
