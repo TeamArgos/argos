@@ -11,19 +11,43 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by jordan on 4/12/17.
  */
 
 public class HttpUtils {
+    private static String TAG = HttpUtils.class.getName();
+
+    /**
+     * Http get request
+     * @param urlString
+     * @param headers
+     * @return
+     */
     public static String get(String urlString, Map<String, String> headers) {
         return genericRequest(urlString, "GET", null, headers);
     }
 
+    /**
+     * Http post request
+     * @param url
+     * @param body
+     * @param headers
+     * @return
+     */
     public static String post(String url, String body, Map<String, String> headers) {
         return genericRequest(url, "POST", body, headers);
+    }
+
+    /**
+     * Http put request
+     * @param url
+     * @param body
+     * @param headers
+     * @return
+     */
+    public static String put(String url, String body, Map<String, String> headers) {
+        return genericRequest(url, "PUT", body, headers);
     }
 
     private static String genericRequest(String urlString, String method, String body, Map<String, String> headers) {
@@ -35,6 +59,11 @@ public class HttpUtils {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod(method);
             urlConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            if (headers != null) {
+                for (String h : headers.keySet()) {
+                    urlConnection.setRequestProperty(h, headers.get(h));
+                }
+            }
             if (body != null) {
                 OutputStream os = urlConnection.getOutputStream();
                 os.write(body.getBytes("UTF-8"));

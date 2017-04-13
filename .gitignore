@@ -4,4 +4,4 @@
 !**/keystore/sample-admin-key.json
 !**/keystore/sample-client-key.json
 **/*.iml
-**/*.idea
+**/.idea

@@ -42,7 +42,7 @@ DeviceService.prototype.notifyStateBulk = function(devices, fulcrumId) {
                     s.reachable = false;
                     ref.child(k).set(s);
                 } else {
-                    promises.push(this.notifyState(k, fulcrumId, s));
+                    promises.push(this.notifyState(k, fulcrumId, devices[k]));
                     delete devices[k];
                 }
             }
