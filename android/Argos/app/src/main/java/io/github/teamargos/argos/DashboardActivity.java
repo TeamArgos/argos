@@ -52,10 +52,12 @@ public class DashboardActivity extends DrawerActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Device d = (Device) gridAdapter.getItem(position);
-                boolean state = !d.state.on;
-                ChangeDeviceStateTask task = new ChangeDeviceStateTask();
-                DeviceStateChange dsc = new DeviceStateChange(d, state);
-                task.execute(dsc);
+                if (d.state.reachable) {
+                    boolean state = !d.state.on;
+                    ChangeDeviceStateTask task = new ChangeDeviceStateTask();
+                    DeviceStateChange dsc = new DeviceStateChange(d, state);
+                    task.execute(dsc);
+                }
             }
         });
     }
@@ -115,6 +117,7 @@ public class DashboardActivity extends DrawerActivity {
         }
 
         protected void onPostExecute(String data) {
+            System.out.println(data);
             StateChangeResponse res = new Gson().fromJson(data, StateChangeResponse.class);
             if (res.success) {
                 this.device.state.on = !this.device.state.on;

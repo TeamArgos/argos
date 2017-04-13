@@ -52,10 +52,14 @@ public class DeviceGridAdapter extends BaseAdapter {
         }
         Device device = this.devices.get(position);
         TextView name = (TextView) deviceView.findViewById(R.id.device_name);
+        TextView reachableTv = (TextView) deviceView.findViewById(R.id.reachable_txt);
         name.setText(device.name);
         Drawable d = ContextCompat.getDrawable(this.context, R.drawable.device_tile_off);
         if (device.state.reachable && device.state.on) {
             d = ContextCompat.getDrawable(this.context, R.drawable.device_tile_on);
+            reachableTv.setText("");
+        } else if (!device.state.reachable) {
+            reachableTv.setText("unreachable");
         }
 
         deviceView.setBackground(d);

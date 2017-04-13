@@ -14,8 +14,8 @@ module.exports = function(app, ds, config) {
         var did = req.params.deviceId;
         var fulcrumId = req.params.fulcrumId;
         var state = req.body.state;
-        ds.notifyState(did, fulcrumId, state).then((res) => {
-            res.send(res);
+        ds.notifyState(did, fulcrumId, state).then((body) => {
+            res.send(body);
         }).catch((err) => {
             console.log(err);
             res.status(500).send(err.toString());
@@ -25,7 +25,7 @@ module.exports = function(app, ds, config) {
     app.put("/notify_state/:fulcrumId", (req, res) => {
         var devices = req.body;
         ds.notifyStateBulk(devices, req.params.fulcrumId).then(success => {
-            res.send("Success");
+            res.send(success);
         }).catch(err => {
             console.log(err)
             res.status(500).send(err);

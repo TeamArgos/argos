@@ -22,9 +22,9 @@ DeviceService.prototype.notifyState = function(deviceId, uid, state) {
         var history = this.deviceHistory.child(historyPath).set(state)
             
         Promise.all([curr, history]).then((res) => {
-            resolve(res);
+            resolve({"success": true});
         }).catch((err) => {
-            reject(err);
+            reject({"success": false, "err": err});
         });
     })
 }
@@ -51,9 +51,9 @@ DeviceService.prototype.notifyStateBulk = function(devices, fulcrumId) {
                 promises.push(this.notifyState(remaining, fulcrumId, devices[remaining]));
 
             Promise.all(promises).then(res => {
-                resolve(true);
+                resolve({"success": true});
             }).catch(err => {
-                reject(err);
+                reject({"success": false, "err": err});
             })
         })
     })
