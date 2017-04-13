@@ -9,7 +9,9 @@ import com.google.gson.annotations.SerializedName;
 public class Device {
     public String name;
     public String type;
+    public String fulcrumId;
 
     @SerializedName("uniqueid")
     public String id;
+    public DeviceState state;
 }

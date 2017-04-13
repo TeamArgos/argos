@@ -1,4 +1,5 @@
 var Webapi = require("../services/webapi-service");
+var config = require("../utils/conf-mgr");
 
 var device_apis = {
     "hue": require('./hue-bridge')
@@ -24,6 +25,7 @@ DeviceService.prototype.discover = function() {
             for(let make of device_arr) {
                 for (let id of Object.keys(make)) {
                     this.devices[id] = make[id];
+                    this.devices[id].fulcrumId = config.getUid();
                 }
             }
             this.api.notifyStateBatch(this.devices).then(() => {

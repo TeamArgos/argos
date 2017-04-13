@@ -13,7 +13,7 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -25,20 +25,18 @@
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
             </android.support.v7.widget.Toolbar>
+            <GridView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/device_grid"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="10dp"
+                android:horizontalSpacing="10dp"
+                android:layout_margin="10dp"
+                android:numColumns="3"
+                android:layout_gravity="center"/>
         </android.support.design.widget.AppBarLayout>
-
-
-
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/device_grid">
-
-        </GridLayout>
-
-
     </FrameLayout>
     <!-- The navigation drawer -->
     <ListView android:id="@+id/left_drawer"

@@ -1,10 +1,9 @@
-package io.github.teamargos.argos.views;
+package io.github.teamargos.argos.Views;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextClock;
 import android.widget.TextView;
 
 import io.github.teamargos.argos.R;
@@ -32,9 +31,15 @@ public class DeviceTileView extends LinearLayout {
         init();
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int squareSize = getMeasuredWidth(); // square size
+        int measureSpec = MeasureSpec.makeMeasureSpec(squareSize, MeasureSpec.EXACTLY);
+        super.onMeasure(measureSpec, measureSpec);
+    }
+
     private void init() {
         inflate(getContext(), R.layout.view_device_tile, this);
-        this.name = (TextView)findViewById(R.id.device_name);
-        this.name.setText("Test");
     }
 }
