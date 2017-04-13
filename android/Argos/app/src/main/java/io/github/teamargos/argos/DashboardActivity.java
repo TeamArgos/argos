@@ -118,13 +118,17 @@ public class DashboardActivity extends DrawerActivity {
 
         protected void onPostExecute(String data) {
             System.out.println(data);
-            StateChangeResponse res = new Gson().fromJson(data, StateChangeResponse.class);
-            if (res.success) {
-                this.device.state.on = !this.device.state.on;
-                refreshGrid();
-            } else {
-                this.device.state.reachable = false;
-                refreshGrid();
+            try {
+                StateChangeResponse res = new Gson().fromJson(data, StateChangeResponse.class);
+                if (res.success) {
+                    this.device.state.on = !this.device.state.on;
+                    refreshGrid();
+                } else {
+                    this.device.state.reachable = false;
+                    refreshGrid();
+                }
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
             }
         }
     }

@@ -16,7 +16,15 @@ module.exports.listen = function(url, uid) {
             on: req.on
         }
         request.post(`${baseUrl}/set_state`, {json: data}, (err, res, body) => {
-            if (err) console.log(err);
+            var success = true;
+            if (err) {
+                console.log(err);
+                success = false;
+            }
+            socket.emit("taskComplete", {
+                taskId: req.taskId,
+                success: success
+            })
         });
     })
 

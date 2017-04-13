@@ -36,8 +36,11 @@ module.exports = function(app, ds, config) {
         var did = req.params.deviceId;
         var uid = req.params.uid;
         var on = req.body.on;
-        ds.setDeviceState(did, uid, on); 
-        res.send("Success");
+        ds.setDeviceState(did, uid, on).then((r) => {
+            res.send({success: true});
+        }).catch((err) => {
+            res.send({success: false});
+        }); 
     })
 
     app.get("/devices/:uid", (req, res) => {

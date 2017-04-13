@@ -6,7 +6,6 @@ var WebApi = require("./services/webapi-service");
 var JobService = require('./services/job-service');
 var io = require('./services/io-receive');
 
-var api = new WebApi();
 var js = new JobService();
 
 if (argv.d || argv.dev) process.env.dev = true;
@@ -25,6 +24,7 @@ let port = 8000;
 
 // Start express app
 app.listen(port, () => {
+	var api = new WebApi();
 	console.log("Listening on " + port);
 	js.runSetStateJob();
 	js.runDiscoverJob();
