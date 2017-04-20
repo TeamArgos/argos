@@ -83,6 +83,24 @@ DeviceService.prototype.setDeviceState = function(deviceId, uid, on) {
     return this.hs.setDeviceState(deviceId, uid, on);
 }
 
+DeviceService.prototype.getTimeSeries = function(deviceId, fulcrumId, from, to) {
+    return new Promise((resolve, reject) => {
+        var ref = this.deviceHistory.child(`${fulcrumId}/${deviceId}`).orderByKey();
+        if (from) {
+            ref = ref.startAt(from);
+        }
+        if (to) {
+            ref = ref.endAt(to);
+        }
+        ref.once("value").then(snapshot => {
+            var val = snapshot.val();
+            resolve(val);
+        }).catch(err => {
+            reject(err);
+        })
+    })
+}
+
 DeviceService.prototype.getDeviceState = function(deviceId, uid) {
 
 }

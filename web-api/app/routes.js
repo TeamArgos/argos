@@ -79,4 +79,15 @@ module.exports = function(app, ds, config) {
             res.status(403).send(err);
         })
     })
+
+    app.get("/get_time_series/:fulcrumId/:deviceId", (req, res) => {
+        var fulcrumId = req.params.fulcrumId;
+        var deviceId = req.params.deviceId;
+        var q = req.query;
+        ds.getTimeSeries(deviceId, fulcrumId, q.from, q.to).then(val => {
+            res.json(val);
+        }).catch(err => {
+            res.status(404).send(err);
+        })
+    })
 }
