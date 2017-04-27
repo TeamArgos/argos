@@ -11,6 +11,7 @@
   "author": "argos",
   "license": "ISC",
   "dependencies": {
+    "bleno": "^0.4.2",
     "body-parser": "^1.16.1",
     "cron": "^1.2.1",
     "express": "^4.14.1",

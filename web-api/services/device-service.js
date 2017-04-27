@@ -1,9 +1,11 @@
 var fb = require("./firebase-service");
+var ML = require('../ml/anomaly-classifier');
 
 function DeviceService(homeService, config) {
     this.hs = homeService;
     this.fs = new fb(config);
     this.db = this.fs.db;
+    this.classifier = new ML();
     this.devices = this.db.ref().child("devices");
     this.deviceHistory = this.db.ref().child("device-history");
     this.fulcrumMappings = this.db.ref().child("fulcrum-mappings");
@@ -22,6 +24,11 @@ DeviceService.prototype.notifyState = function(deviceId, uid, state) {
         var history = this.deviceHistory.child(historyPath).set(state)
             
         Promise.all([curr, history]).then((res) => {
+            var classification = this.classifier.classify(state);
+            this.classifier.train(state);
+            if (classification.anomaly && classification.certainty >= 0.8) {
+                // send a notification
+            }
             resolve({"success": true});
         }).catch((err) => {
             reject({"success": false, "err": err});

@@ -75,6 +75,7 @@ public class DrawerActivity extends AppCompatActivity {
          */
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             String selected = ((TextView)view).getText().toString().toLowerCase();
+            mDrawerList.clearChoices();
 
             switch (selected){
                 case "sign out":
@@ -85,7 +86,13 @@ public class DrawerActivity extends AppCompatActivity {
 
                     Intent signOut = new Intent(this.context, LoginActivity.class);
                     startActivity(signOut);
+                    break;
+                case "pair":
+                    Intent pair = new Intent(this.context, FulcrumPairActivity.class);
+                    startActivity(pair);
+                    break;
             }
+            mDrawerLayout.closeDrawers();
         }
     }
 }

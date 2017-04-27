@@ -23,4 +23,5 @@
 
     <string name="api_base_url">http://argosbackend.herokuapp.com/</string>
     <string name="user_id">user_id</string>
+    <string name="title_activity_fulcrum_pair">FulcrumPairActivity</string>
 </resources>

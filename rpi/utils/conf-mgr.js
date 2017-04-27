@@ -22,7 +22,8 @@ function getUserId() {
             }
         }
     }
-    return hash.update(id).digest('hex');
+    id = id.replace(/:/g, "");
+    return id;
 }
 
 exports.getUid = function() {

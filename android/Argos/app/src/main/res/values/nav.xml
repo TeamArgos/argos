@@ -3,5 +3,6 @@
     <string-array name="nav_titles">
         <item>Devices</item>
         <item>Sign Out</item>
+        <item>Pair</item>
     </string-array>
 </resources>

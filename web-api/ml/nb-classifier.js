@@ -5,7 +5,7 @@
  * probabilities. This makes the math easier and handles better for very
  * small values while still getting the same output
  */
-class NBClassifier {
+export class NBClassifier {
     constructor(features, classes) {
         this.features = features;
         this.classes = classes;
@@ -60,13 +60,19 @@ class NBClassifier {
 
         var cname = "";
         var best = Number.NEGATIVE_INFINITY;
+        var totalPossible = 0;
         for (var c in classProbs) {
+            totalPossible += Math.abs(classProbs[c]);
             if (classProbs[c] > best) {
                 cname = c;
                 best = classProbs[c];
             }
         }
-        return cname;
+        return {
+            class: cname,
+            certainty: Math.abs(classProbs[cname]) / totalPossible,
+            anomaly: cname !== data.class
+        };
     }
 
     /**
@@ -97,5 +103,3 @@ class NBClassifier {
         return count;
     }
 }
-
-module.exports = NBClassifier;
