@@ -5,17 +5,21 @@ var auth = require("basic-auth");
 
 module.exports = function(app, ds, us) {
     var userIsHome = function(fulcrumId, ip) {
-        return new Promise((resolve, reject) => {
-            us.getMappingsByFulcrum(fulcrumId).then(users => {
-                var tasks = [];
-                for (var user in users) {
-                    tasks.push(us.withinRange(user, fulcrumId, 1000));
-                }
-                Promise.all(tasks).then(success => {
-                    resolve(success.indexOf(true) > -1);
-                })
+        if (process.env.away) {
+            return Promise.resolve(false);
+        } else {
+            return new Promise((resolve, reject) => {
+                us.getMappingsByFulcrum(fulcrumId).then(users => {
+                    var tasks = [];
+                    for (var user in users) {
+                        tasks.push(us.withinRange(user, fulcrumId, 1000));
+                    }
+                    Promise.all(tasks).then(success => {
+                        resolve(success.indexOf(true) > -1);
+                    })
+                });
             });
-        });
+        }
     }
 
     app.get("/health", (req, res) => {
@@ -28,7 +32,7 @@ module.exports = function(app, ds, us) {
         var state = req.body.state;
         us.notifyIp(fulcrumId, "fulcrum", req.connection.remoteAddress);
         userIsHome(fulcrumId, req.connection.remoteAddress).then((isHome) => {
-            state.isHome = isHome
+            state.isHome = isHome;
             ds.notifyState(did, fulcrumId, state).then((body) => {
                 res.send(body);
             }).catch((err) => {
@@ -55,7 +59,7 @@ module.exports = function(app, ds, us) {
     app.post("/set_state/:fulcrumId/:deviceId", (req, res) => {
         var did = req.params.deviceId;
         var fulcrumId = req.params.fulcrumId;
-        var uid = req.headers.Token;
+        var uid = req.headers.token;
         var on = req.body.on;
         us.notifyIp(uid, "user", req.connection.remoteAddress);
         ds.setDeviceState(did, fulcrumId, on).then((r) => {

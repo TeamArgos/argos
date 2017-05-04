@@ -9,6 +9,6 @@ var nodemon = require('gulp-nodemon');
 gulp.task("run-dev", [], () => {
     nodemon({
         script: 'server.js',
-        args: ['-d', '-e', '-b']
+        args: ['-d', '-e']
     }).on("start");
 })
