@@ -84,16 +84,30 @@ function shuffle(a) {
     }
 }
 
-// For running as main
-//var data = fs.readFileSync("./data/sample.json");
-//data = JSON.parse(data);
-//data = convertSet(data);
-//var split = Math.floor((data.length / 3) * 2)
-//shuffle(data);
-//var training = data.slice(0, split);
-//var test = data.slice(split, data.length)
-//trainData(training);
-//classify(test);
+// For running as a script
+if (require.main == module) {
+    var firebaseAdmin = require("firebase-admin");
+    var cred = require("./admin_key.json");
+    var classifier = new Classifier();
+    firebaseAdmin.initializeApp({
+        credential: firebaseAdmin.credential.cert(cred),
+        databaseURL: "https://argos-f950e.firebaseio.com"
+    });
+    var db = firebaseAdmin.database();
+    var fulcrumId = "9cb6d0d20179";
+    var deviceHistory = db.ref().child("device-history");
+    deviceHistory.child(fulcrumId).once("value").then(snapshot => {
+        var val = snapshot.val();
+        for (let device of Object.keys(val)) {
+            for (let time of Object.keys(device)) {
+                console.log(device[time])
+                var c = classifier.classify(device[time], time, true);
+                console.log(c);
+                classifier.train(device[time], time, true);
+            }
+        }
+    })
+}
 
 module.exports.Classifier = Classifier;
 module.exports.shuffle = shuffle;
