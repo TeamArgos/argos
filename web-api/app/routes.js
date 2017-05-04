@@ -57,7 +57,7 @@ module.exports = function(app, ds, us) {
         var fulcrumId = req.params.fulcrumId;
         var uid = req.headers.Token;
         var on = req.body.on;
-        us.notifyIp(userId, "user", req.connection.remoteAddress);
+        us.notifyIp(uid, "user", req.connection.remoteAddress);
         ds.setDeviceState(did, fulcrumId, on).then((r) => {
             res.send({success: true});
         }).catch((err) => {
