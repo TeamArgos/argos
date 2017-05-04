@@ -2,23 +2,26 @@ var bleno = require("bleno");
 var conf = require("../utils/conf-mgr");
 
 var fulcrumId = splitMac(conf.getUid());
-
-//process.env.BLENO_HCI_DEVICE_ID = 1;
-
 var serviceUuids = ["6172", "676f", "7363", "6170"];
 
 for (let i of fulcrumId) {
     serviceUuids.push(i);
 }
 
-bleno.on('stateChange', (state) => {
-    console.log(state);
-    if (state === "poweredOn") {
-        bleno.startAdvertising("Service", serviceUuids, (err) => {
-            if (err) console.log(err)
-        });
-    }
-})
+module.exports.advertise = function() {
+    bleno.on('stateChange', (state) => {
+        console.log(state);
+        if (state === "poweredOn") {
+            bleno.startAdvertising("Service", serviceUuids, (err) => {
+                if (err) console.log(err)
+            });
+        }
+    })
+}
+
+module.exports.stop = function() {
+    bleno.stopAdvertising();
+}
 
 bleno.on('advertisingStart', () => {
     console.log("Started advertising service");

@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,8 +36,9 @@ import io.github.teamargos.argos.Models.DeviceStateChange;
 import io.github.teamargos.argos.Models.Fulcrum;
 import io.github.teamargos.argos.Models.StateChangeResponse;
 import io.github.teamargos.argos.Utils.HttpUtils;
+import io.github.teamargos.argos.Views.ArgosBaseActivity;
 
-public class FulcrumPairActivity extends AppCompatActivity {
+public class FulcrumPairActivity extends ArgosBaseActivity {
     private static final String TAG = "FulcrumPairActivity";
     private static final int START_BT = 2;
 
@@ -49,6 +51,12 @@ public class FulcrumPairActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fulcrum_pair);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         lvFulcrums = (ListView) findViewById(R.id.lvFulcrums);
         lvFulcrums.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

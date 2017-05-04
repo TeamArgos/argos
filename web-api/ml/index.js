@@ -1,14 +1,11 @@
 let NBClassifier = require("./nb-classifier");
 let fs = require("fs");
-
-var data = fs.readFileSync("./data/sample.json");
-data = JSON.parse(data);
-data = convertSet(data);
-
 var classes = ["on", "off"];
-var features = ["timestamp", "uniqueid", "type"];
+var features = ["day", "hour", "month", "isHome"];
 
-let classifier = new NBClassifier(features, classes);
+function Classifier() {
+    this.classifier = new NBClassifier(features, classes);
+}
 
 function convertSet(dataset) {
     var data = [];
@@ -24,11 +21,12 @@ function convertData(data, timestamp) {
     formatted.class = data.state.on ? "on" : "off";
     formatted.trueTimestamp = timestamp;
     var ts = new Date(parseInt(timestamp));
-    ts.setMilliseconds(0);
-    ts.setSeconds(0);
-    ts.setMinutes(0);
     formatted.features = {
-        timestamp: ts.getTime().toString(),
+        day: ts.getDay(),
+        hour: ts.getHours(),
+        month: ts.getMonth(),
+        minute: ts.getMinutes(),
+        isHome: data.isHome ? data.isHome : false,
         reachable: data.state.reachable,
         uniqueId: data.uniqueId,
         type: data.type
@@ -37,26 +35,32 @@ function convertData(data, timestamp) {
     return formatted;
 }
 
-function trainData(data) {
+Classifier.prototype.trainData = function(data) {
     for (let d of data) {
-        classifier.train(d);
+        this.train(d);
     }
 }
 
-function classify(data) {
-    var correct = 0;
-    var total = 0;
-    for (let d of data) {
-        var pred = classifier.classify(d);
-        var c = false;
-        if (pred.class == d.class) {
-            correct++;
-            c = !c;
-        }
-        total++;
-        console.log(`${pred.certainty} certain. Correct: ${c}`);
+Classifier.prototype.train = function(d, timestamp, transform) {
+    if (transform)
+        d = convertData(d, timestamp)
+    this.classifier.train(d);
+}
+
+Classifier.prototype.trainFromJson = function(d) {
+    var data = convertSet(d);
+    this.trainData(data);
+}
+
+Classifier.prototype.classify = function(data, timestamp, transform) {
+    if (transform)
+        data = convertData(data, timestamp)
+    var pred = this.classifier.classify(data);
+    var c = false;
+    if (pred.class == data.class) {
+        c = !c;
     }
-    console.log(`${correct} correct out of ${total} total`);
+    return pred;
 }
 
 /**
@@ -72,7 +76,24 @@ function extrapolate(data, n) {
     return newData;
 }
 
-var split = Math.floor((data.length / 3) * 2)
 
-trainData(data.slice(0, split));
-classify(data.slice(split, data.length));
+function shuffle(a) {
+    for (let i = a.length; i; i--) {
+        let j = Math.floor(Math.random() * i);
+        [a[i - 1], a[j]] = [a[j], a[i - 1]];
+    }
+}
+
+// For running as main
+//var data = fs.readFileSync("./data/sample.json");
+//data = JSON.parse(data);
+//data = convertSet(data);
+//var split = Math.floor((data.length / 3) * 2)
+//shuffle(data);
+//var training = data.slice(0, split);
+//var test = data.slice(split, data.length)
+//trainData(training);
+//classify(test);
+
+module.exports.Classifier = Classifier;
+module.exports.shuffle = shuffle;

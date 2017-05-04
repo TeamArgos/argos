@@ -1,4 +1,4 @@
-export class AnamolyClassifier {
+class AnomalyClassifier {
     constructor() {
 
     }
@@ -18,3 +18,5 @@ export class AnamolyClassifier {
         }
     }
 }
+
+module.exports = AnomalyClassifier;

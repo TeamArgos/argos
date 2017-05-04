@@ -1,12 +1,14 @@
 package io.github.teamargos.argos.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -52,15 +54,21 @@ public class DeviceGridAdapter extends BaseAdapter {
         }
         Device device = this.devices.get(position);
         TextView name = (TextView) deviceView.findViewById(R.id.device_name);
-        TextView reachableTv = (TextView) deviceView.findViewById(R.id.reachable_txt);
+        TextView stateTv = (TextView) deviceView.findViewById(R.id.state);
         name.setText(device.name);
-        Drawable d = ContextCompat.getDrawable(this.context, R.drawable.device_tile_off);
+        Drawable d = ContextCompat.getDrawable(this.context, R.drawable.device_tile);
+        int color = context.getResources().getColor(R.color.colorDeviceTileOff);
         if (device.state.reachable && device.state.on) {
-            d = ContextCompat.getDrawable(this.context, R.drawable.device_tile_on);
-            reachableTv.setText("");
+            color = context.getResources().getColor(R.color.colorDeviceTileOn);
+            stateTv.setText("ON");
         } else if (!device.state.reachable) {
-            reachableTv.setText("unreachable");
+            stateTv.setText("unreachable");
+        } else {
+            stateTv.setText("OFF");
         }
+
+        PorterDuffColorFilter cf = new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        d.setColorFilter(cf);
 
         deviceView.setBackground(d);
         return deviceView;

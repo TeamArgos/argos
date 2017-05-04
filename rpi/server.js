@@ -5,6 +5,7 @@ var argv = require("minimist")(process.argv.slice(-2));
 var WebApi = require("./services/webapi-service");
 var JobService = require('./services/job-service');
 var io = require('./services/io-receive');
+var beacon = require('./services/beacon');
 
 var js = new JobService();
 
@@ -13,7 +14,6 @@ if (argv.e || argv.emulator) process.env.USE_EMULATOR = true;
 if (argv.b) process.env.PROD_BACKEND = true;
 
 var config = require("./utils/conf-mgr");
-config.startup();
 
 app.use(bodyParser.json());
 
@@ -26,6 +26,7 @@ let port = 8000;
 app.listen(port, () => {
 	var api = new WebApi();
 	console.log("Listening on " + port);
+	beacon.advertise();
 	js.runSetStateJob();
 	js.runDiscoverJob();
 	io.listen(api.baseUrl, config.getUid());

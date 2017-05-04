@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:toolbarStyle">@style/App.ToolbarTheme</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="colorControlNormal">@color/colorTextPrimary</item>
+        <item name="colorControlActivated">@color/colorDeviceTileOn</item>
+        <item name="colorControlHighlight">@color/colorDeviceTileOn</item>
+
+        <item name="android:textColor">@color/colorTextPrimary</item>
+    </style>
+
+    <style name="App.ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:background">@color/colorBackgroundDark</item>
+        <item name="colorControlNormal">@color/colorTextPrimary</item>
+        <item name="android:textColorPrimary">@color/colorTextPrimary</item>
+        <item name="android:popupTheme">@style/PopupOverlay</item>
+    </style>
+
+    <style name="App.ToolbarText" parent="App.ToolbarTheme">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

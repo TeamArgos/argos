@@ -5,13 +5,18 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:id="@+id/reachable_txt"/>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="4dp"
+        android:padding="2dp"
+        android:id="@+id/state"
+        android:background="@drawable/device_state_bg"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="4dp"
         android:id="@+id/device_name"
         android:layout_alignParentBottom="true"/>
 </RelativeLayout>

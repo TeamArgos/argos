@@ -1,14 +1,35 @@
 var fb = require("./firebase-service");
-var ML = require('../ml/anomaly-classifier');
+var ml = require('../ml');
 
 function DeviceService(homeService, config) {
     this.hs = homeService;
     this.fs = new fb(config);
     this.db = this.fs.db;
-    this.classifier = new ML();
+    this.classifiers = {};
     this.devices = this.db.ref().child("devices");
     this.deviceHistory = this.db.ref().child("device-history");
     this.fulcrumMappings = this.db.ref().child("fulcrum-mappings");
+}
+
+/**
+ * A method for debugging to allow classifer data to be backfilled.
+ */
+DeviceService.prototype.initClassifier = function(fulcrumId) {
+    return new Promise((resolve, reject) => {
+        this.classifiers[fulcrumId] = new ml.Classifier();
+        var c = this.classifiers[fulcrumId];
+        this.deviceHistory.child(fulcrumId).once("value").then(snapshot => {
+            var val = snapshot.val();
+            for (var device in val) {
+                var data = val[device];
+                c.trainFromJson(data);
+            }
+            resolve();
+        }).catch(err => {
+            console.log(err);
+            reject(err);
+        })
+    })
 }
 
 /**
@@ -21,13 +42,20 @@ DeviceService.prototype.notifyState = function(deviceId, uid, state) {
         var path = `${uid}/${deviceId}`;
         var historyPath = `${path}/${timestamp}`;
         var curr = this.devices.child(path).set(state);
-        var history = this.deviceHistory.child(historyPath).set(state)
+        var history = this.deviceHistory.child(historyPath).set(state);
+        var init = undefined;
+
+        if (!(uid in this.classifiers)) {
+            init = this.initClassifier(uid);
+        }
             
-        Promise.all([curr, history]).then((res) => {
-            var classification = this.classifier.classify(state);
-            this.classifier.train(state);
-            if (classification.anomaly && classification.certainty >= 0.8) {
+        Promise.all([curr, history, init]).then((res) => {
+            var classification = this.classifiers[uid].classify(state, timestamp, true);
+            console.log("Classification: ", classification);
+            this.classifiers[uid].train(state, timestamp, true);
+            if (classification.anomaly && classification.certainty >= 0.90) {
                 // send a notification
+                console.log("ANOMALY");
             }
             resolve({"success": true});
         }).catch((err) => {
@@ -36,8 +64,10 @@ DeviceService.prototype.notifyState = function(deviceId, uid, state) {
     })
 }
 
-// TODO: Fix issue where new devices aren't added
-DeviceService.prototype.notifyStateBulk = function(devices, fulcrumId) {
+/**
+ * Notifies the state for multiple devices
+ */
+DeviceService.prototype.notifyStateBulk = function(devices, fulcrumId, isHome) {
     return new Promise((resolve, reject) => {
         var ref = this.devices.child(fulcrumId);
         var promises = [];
@@ -49,13 +79,16 @@ DeviceService.prototype.notifyStateBulk = function(devices, fulcrumId) {
                     s.state.reachable = false;
                     ref.child(k).set(s);
                 } else {
+                    devices[k].isHome = isHome;
                     promises.push(this.notifyState(k, fulcrumId, devices[k]));
                     delete devices[k];
                 }
             }
 
-            for (var remaining in devices) 
+            for (var remaining in devices) {
+                devices[remaining].isHome = isHome;
                 promises.push(this.notifyState(remaining, fulcrumId, devices[remaining]));
+            }
 
             Promise.all(promises).then(res => {
                 resolve({"success": true});

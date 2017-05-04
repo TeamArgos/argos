@@ -16,8 +16,12 @@
     "express": "^4.15.2",
     "firebase": "^3.7.5",
     "firebase-admin": "^4.2.0",
+    "geoip-lite": "^1.2.0",
+    "geolib": "^2.0.22",
     "minimist": "^1.2.0",
+    "nearest-neighbor": "0.0.3",
     "request": "^2.81.0",
+    "scikit-node": "^0.2.2",
     "socket.io": "^1.7.3"
   },
   "devDependencies": {

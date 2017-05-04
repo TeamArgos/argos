@@ -9,13 +9,13 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+        android:theme="@style/App.ToolbarTheme">
 
         <TextView
             android:text="@string/app_name"
             android:layout_gravity="center"
+            android:theme="@style/App.ToolbarText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

@@ -5,7 +5,7 @@
  * probabilities. This makes the math easier and handles better for very
  * small values while still getting the same output
  */
-export class NBClassifier {
+class NBClassifier {
     constructor(features, classes) {
         this.features = features;
         this.classes = classes;
@@ -38,6 +38,15 @@ export class NBClassifier {
         }
     }
 
+    classifyWithCounts(data, classCounts) {
+        this.classCounts = classCounts;
+        return this.classify(data);
+    }
+
+    setClassCounts(classCounts) {
+        this.classCounts = classCounts;
+    }
+
     /**
      * Classifies data point `data` as one of this classifier's provided
      * classes
@@ -60,9 +69,10 @@ export class NBClassifier {
 
         var cname = "";
         var best = Number.NEGATIVE_INFINITY;
-        var totalPossible = 0;
+        var probabilities = [];
+        var min = Number.POSITIVE_INFINITY;
         for (var c in classProbs) {
-            totalPossible += Math.abs(classProbs[c]);
+            if (classProbs[c] < min) min = classProbs[c];
             if (classProbs[c] > best) {
                 cname = c;
                 best = classProbs[c];
@@ -70,9 +80,17 @@ export class NBClassifier {
         }
         return {
             class: cname,
-            certainty: Math.abs(classProbs[cname]) / totalPossible,
+            certainty: this.calcualteCertainty(classProbs, cname, min),
             anomaly: cname !== data.class
         };
+    }
+
+    calcualteCertainty(probabilities, cname, min) {
+        var total = 0;
+        for (var c in probabilities) {
+            total += probabilities[c] + Math.abs(min) + 1;
+        }
+        return (probabilities[cname] + Math.abs(min) + 1) / total;
     }
 
     /**
@@ -103,3 +121,5 @@ export class NBClassifier {
         return count;
     }
 }
+
+module.exports = NBClassifier;

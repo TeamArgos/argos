@@ -3,6 +3,7 @@ package io.github.teamargos.argos;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -78,7 +79,9 @@ public class DashboardActivity extends DrawerActivity {
         protected String doInBackground(String... params) {
             String uid = this.prefs.getString(getString(R.string.user_id), null);
             String urlString = getString(R.string.api_base_url) + "devices/" + uid;
-            return HttpUtils.get(urlString, null);
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Token", this.prefs.getString("user_id", ""));
+            return HttpUtils.get(urlString, headers);
         }
 
         protected void onPostExecute(String data) {
@@ -86,7 +89,9 @@ public class DashboardActivity extends DrawerActivity {
             Map<String, Device> devices;
             Gson g = new Gson();
             devices = g.fromJson(data, new TypeToken<Map<String, Device>>(){}.getType());
-            layoutDevices(new ArrayList<>(devices.values()));
+            if (devices != null) {
+                layoutDevices(new ArrayList<>(devices.values()));
+            }
         }
     }
 
@@ -112,8 +117,10 @@ public class DashboardActivity extends DrawerActivity {
             String urlString = getString(R.string.api_base_url) + "set_state/" + fulcrumId + "/" + deviceId;
             Map<String, String> body = new HashMap<>();
             body.put("on", Boolean.toString(params[0].on));
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Token", this.prefs.getString("user_id", ""));
             String bodyString = new Gson().toJson(body);
-            return HttpUtils.post(urlString, bodyString, null);
+            return HttpUtils.post(urlString, bodyString, headers);
         }
 
         protected void onPostExecute(String data) {

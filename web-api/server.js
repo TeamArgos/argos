@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var HomeService = require("./services/home-service");
 var DeviceService = require("./services/device-service");
+var UserService = require("./services/user-service");
 var argv = require("minimist")(process.argv.slice(-2));
 var AWS = require("aws-sdk");
 var s3 = new AWS.S3();
@@ -29,13 +30,14 @@ Promise.all(promises).then(responses => {
     var io = require("socket.io")(server);
     var hs = new HomeService(io);
     var ds = new DeviceService(hs, config);
+    var us = new UserService(config);
 
     if (argv.d || argv.dev) process.env.dev = true;
 
     var port = process.env.PORT || 8080;
 
     app.use(bodyParser.json());
-    require('./app/routes.js')(app, ds, config);
+    require('./app/routes.js')(app, ds, us);
 
     server.listen(port, () => {
         console.log("Lisening on port " + port);

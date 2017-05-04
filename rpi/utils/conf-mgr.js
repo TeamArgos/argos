@@ -2,12 +2,22 @@ var fs = require('fs');
 var os = require('os');
 var defaultConfig = __dirname + "/defaults.json";
 var config = require(defaultConfig);
-var userConfig = `${os.homedir()}/${config.local_directory}/settings.json`;
+var userConfigDir = `${os.homedir()}/${config.local_directory}`;
+var userConfig = `${userConfigDir}/settings.json`;
 var crypto = require('crypto')
 var hash = crypto.createHash('sha256');
 
+exports.startup = function() {
+    if (!fs.existsSync(userConfigDir)){
+        fs.mkdirSync(userConfigDir);
+    }
+    if (!fs.existsSync(userConfig))
+        writeConfig();
+}
+
 // Only reload if this module has not yet been cached
 if (!exports.loaded) {
+    exports.startup();
     loadConfig();
     config.uid = getUserId();
 }
@@ -28,12 +38,6 @@ function getUserId() {
 
 exports.getUid = function() {
     return config.uid;
-}
-
-exports.startup = function() {
-    if (!fs.existsSync(userConfig)){
-        fs.mkdirSync(userConfig);
-    }
 }
 
 function loadConfig() {

@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import io.github.teamargos.argos.Views.ArgosBaseActivity;
+
 import static android.R.id.edit;
 
 /**
@@ -23,7 +25,7 @@ import static android.R.id.edit;
  * An activity that should be extended to add a drawer to another activity.
  */
 
-public class DrawerActivity extends AppCompatActivity {
+public class DrawerActivity extends ArgosBaseActivity {
 
     private String TAG = "DRAWER";
 
@@ -35,6 +37,7 @@ public class DrawerActivity extends AppCompatActivity {
     public void setupDrawer() {
         // Setup toolbar
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setToolbarFont(mToolbar, R.id.ToolbarTitle);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
