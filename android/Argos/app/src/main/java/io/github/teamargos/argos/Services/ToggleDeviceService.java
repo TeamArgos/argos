@@ -1,5 +1,6 @@
 package io.github.teamargos.argos.Services;
 
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,7 +24,8 @@ import io.github.teamargos.argos.Utils.HttpUtils;
  */
 
 public class ToggleDeviceService extends Service {
-    String TAG = "TOGGLE_SERVICE";
+    private String TAG = "TOGGLE_SERVICE";
+    private int NOT_ID = 1;
 
     public IBinder onBind(Intent intent) {
         return null;
@@ -32,6 +34,10 @@ public class ToggleDeviceService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         ToggleDeviceTask task = new ToggleDeviceTask();
         task.execute(intent);
+
+        NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notMan.cancel(NOT_ID);
+
         return START_STICKY;
     }
 

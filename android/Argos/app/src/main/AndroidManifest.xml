@@ -31,6 +31,9 @@
         <activity
             android:name=".FulcrumPairActivity"
             android:label="@string/title_activity_fulcrum_pair"></activity>
+        <activity
+            android:name=".DevicesActivity"
+            android:label="Devices"></activity>
 
         <service android:name=".Services.FBMessagingService">
             <intent-filter>

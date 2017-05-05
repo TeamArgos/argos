@@ -20,7 +20,8 @@ import io.github.teamargos.argos.R;
  */
 
 public class FBMessagingService extends FirebaseMessagingService {
-    String TAG = "FB_MESSAGING";
+    private String TAG = "FB_MESSAGING";
+    private int NOT_ID = 1;
 
     @Override
     public void onMessageReceived(RemoteMessage rm) {
@@ -83,15 +84,16 @@ public class FBMessagingService extends FirebaseMessagingService {
         notBuilder.addAction(R.mipmap.ic_launcher_round, "Turn " + desState, togglePending);
         notBuilder.addAction(R.mipmap.ic_launcher_round, "Ignore", pi);
 
-        int notId = 001;
         Notification not = notBuilder.build();
 
         // Set up notification defaults
         not.defaults |= Notification.DEFAULT_VIBRATE;
         not.defaults |= Notification.DEFAULT_SOUND;
 
+        not.flags = Notification.FLAG_AUTO_CANCEL;
+
         NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notMan.notify(notId, not);
+        notMan.notify(NOT_ID, not);
 
     }
 }

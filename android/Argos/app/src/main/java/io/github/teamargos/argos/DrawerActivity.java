@@ -87,6 +87,9 @@ public class DrawerActivity extends ArgosBaseActivity {
                     Intent pair = new Intent(this.context, FulcrumPairActivity.class);
                     startActivity(pair);
                     break;
+                case "devices":
+                    Intent devices = new Intent(this.context, DevicesActivity.class);
+                    startActivity(devices);
             }
             mDrawerLayout.closeDrawers();
         }
