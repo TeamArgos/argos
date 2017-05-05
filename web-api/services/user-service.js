@@ -75,7 +75,7 @@ UserService.prototype.withinRange = function(userId, fulcrumId, radius) {
 
 UserService.prototype.mapFulcrum = function(userHash, fulcrumHash) {
     var userMapping = this.fulcrumMappings
-        .child(`users/${userHash}/${fulcrumHash}`).set(true);
+        .child(`user/${userHash}/${fulcrumHash}`).set(true);
     var fulcrumMapping = this.fulcrumMappings
         .child(`fulcrum/${fulcrumHash}/${userHash}`).set(true);
     return Promise.all([fulcrumMapping, userMapping]);
