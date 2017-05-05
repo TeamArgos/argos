@@ -4,5 +4,6 @@
         <item>Devices</item>
         <item>Sign Out</item>
         <item>Pair</item>
+        <item>Notifications</item>
     </string-array>
 </resources>

@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -95,5 +96,10 @@ public class FBMessagingService extends FirebaseMessagingService {
         NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notMan.notify(NOT_ID, not);
 
+
+        // Save notification for future uses
+        SQLiteDatabase notDatabase = openOrCreateDatabase("notifications",MODE_PRIVATE,null);
+        notDatabase.execSQL("CREATE TABLE IF NOT EXISTS Notification(_id INTEGER PRIMARY KEY, DeviceName VARCHAR, DeviceId VARCHAR, FulcrumId VARCHAR, DesiredState INTEGER);");
+        notDatabase.execSQL("INSERT INTO Notification VALUES('" + deviceName +"','" + deviceId + "', '" + fulcrumId + "', '" + desiredState + "');");
     }
 }

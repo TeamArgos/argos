@@ -90,6 +90,9 @@ public class DrawerActivity extends ArgosBaseActivity {
                 case "devices":
                     Intent devices = new Intent(this.context, DevicesActivity.class);
                     startActivity(devices);
+                case "notifications":
+                    Intent nots = new Intent(this.context, NotificationsActivity.class);
+                    startActivity(nots);
             }
             mDrawerLayout.closeDrawers();
         }
