@@ -34,6 +34,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -390,6 +392,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString(getString(R.string.user_id), uid);
                 editor.commit();
+
+                FirebaseMessaging.getInstance().subscribeToTopic(uid);
 
                 Log.d("MAIN", uid);
             } catch (JSONException e) {
