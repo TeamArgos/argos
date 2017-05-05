@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -55,6 +56,17 @@ public class DeviceGridAdapter extends BaseAdapter {
         Device device = this.devices.get(position);
         TextView name = (TextView) deviceView.findViewById(R.id.device_name);
         TextView stateTv = (TextView) deviceView.findViewById(R.id.state);
+        ImageView imgIcon = (ImageView) deviceView.findViewById(R.id.device_icon);
+        int icon;
+        switch (device.type) {
+            case "light":
+                icon = R.drawable.ic_idea;
+                break;
+            default:
+                icon = R.drawable.ic_idea;
+                break;
+        }
+        imgIcon.setBackground(ContextCompat.getDrawable(this.context, icon));
         name.setText(device.name);
         Drawable d = ContextCompat.getDrawable(this.context, R.drawable.device_tile);
         int color = context.getResources().getColor(R.color.colorDeviceTileOff);

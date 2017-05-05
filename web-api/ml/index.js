@@ -96,17 +96,35 @@ if (require.main == module) {
     var db = firebaseAdmin.database();
     var fulcrumId = "9cb6d0d20179";
     var deviceHistory = db.ref().child("device-history");
+    var classifications = [];
     deviceHistory.child(fulcrumId).once("value").then(snapshot => {
         var val = snapshot.val();
+        var keys = {};
+        var len = 0;
+
         for (let device of Object.keys(val)) {
-            for (let time of Object.keys(device)) {
-                console.log(device[time])
-                var c = classifier.classify(device[time], time, true);
-                console.log(c);
-                classifier.train(device[time], time, true);
+            keys[device] = Object.keys(val[device]);
+            len = keys[device].length;
+            keys[device].sort(function(a, b) {
+                return parseInt(a) - parseInt(b);
+            })
+        }
+        for (var i = 0; i < len; i++) {
+            for(let device of Object.keys(val)) {
+                var time = keys[device][i];
+                var d = val[device][time];
+                var c = classifier.classify(d, time, true);
+                c.timestamp = time;
+                if (device === "00:17:88:01:00:d4:12:08-0a") {
+                    classifications.push(c);
+                }
+                classifier.train(d, time, true);
             }
         }
-    })
+        fs.writeFileSync(__dirname + "/viz/data/classifications.json",
+            JSON.stringify(classifications));
+        process.exit(0);
+    });
 }
 
 module.exports.Classifier = Classifier;
