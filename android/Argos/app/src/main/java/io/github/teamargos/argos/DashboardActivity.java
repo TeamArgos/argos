@@ -3,6 +3,7 @@ package io.github.teamargos.argos;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -29,17 +30,21 @@ import io.github.teamargos.argos.Models.DeviceStateChange;
 import io.github.teamargos.argos.Models.StateChangeResponse;
 import io.github.teamargos.argos.Utils.HttpUtils;
 
-public class DashboardActivity extends DrawerActivity {
+public class DashboardActivity extends DrawerActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private String TAG = "DASHBOARD";
     private GridView grid;
     private DeviceGridAdapter gridAdapter;
+    private SwipeRefreshLayout swipeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         setupDrawer();
+
+        swipeView = (SwipeRefreshLayout) findViewById(R.id.device_refresh);
+        swipeView.setOnRefreshListener(this);
 
         getDeviceData(null);
     }
@@ -48,6 +53,7 @@ public class DashboardActivity extends DrawerActivity {
         this.grid = (GridView) this.findViewById(R.id.device_grid);
         this.gridAdapter = new DeviceGridAdapter(this, devices);
         this.grid.setAdapter(this.gridAdapter);
+        this.swipeView.setRefreshing(false);
 
         this.grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -61,6 +67,11 @@ public class DashboardActivity extends DrawerActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        getDeviceData(null);
     }
 
     public void getDeviceData(View v) {

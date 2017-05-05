@@ -66,10 +66,11 @@ public class DeviceGridAdapter extends BaseAdapter {
                 icon = R.drawable.ic_idea;
                 break;
         }
-        imgIcon.setBackground(ContextCompat.getDrawable(this.context, icon));
+        Drawable iconDrawable = ContextCompat.getDrawable(this.context, icon);
         name.setText(device.name);
         Drawable d = ContextCompat.getDrawable(this.context, R.drawable.device_tile);
         int color = context.getResources().getColor(R.color.colorDeviceTileOff);
+        int white = context.getResources().getColor(R.color.colorTextPrimary);
         if (device.state.reachable && device.state.on) {
             color = context.getResources().getColor(R.color.colorDeviceTileOn);
             stateTv.setText("ON");
@@ -80,8 +81,11 @@ public class DeviceGridAdapter extends BaseAdapter {
         }
 
         PorterDuffColorFilter cf = new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        PorterDuffColorFilter whiteCf = new PorterDuffColorFilter(white, PorterDuff.Mode.SRC_IN);
         d.setColorFilter(cf);
+        iconDrawable.setColorFilter(whiteCf);
 
+        imgIcon.setImageDrawable(iconDrawable);
         deviceView.setBackground(d);
         return deviceView;
     }

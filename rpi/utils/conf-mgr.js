@@ -90,7 +90,7 @@ module.exports.getConfig = function(str) {
             obj = obj[levels[i]];
         }
     } catch (e) {
-        console.log(e);
+        //console.log(e);
         return undefined;
     }
     return obj;

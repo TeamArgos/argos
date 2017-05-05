@@ -55,13 +55,13 @@ function getUser(hub) {
         if (hub.user) {
             resolve(hub.user);
         } else {
-            var uid = config.getCredentials(hub.id, "bridge", "hue").username;
+            var uid = config.getCredentials(hub.id, "bridge", "hue");
             if (!uid) {
                 createUser(hub.ip, hub.id).then(u => {
                     resolve(u);
                 });
             } else {
-                resolve(uid);
+                resolve(uid.username);
             }
         }
     })
@@ -99,6 +99,7 @@ function createUser(ip, hubid) {
     return new Promise((resolve, reject) => {
         request.post(url, {json: {"devicetype": "argos#rpi"}}, (err, res, body) => {
             for (let u of body) {
+                console.log(u)
                 if (u.success) {
                     saveHubCreds(u.success.username, hubid)
                     resolve(u.success.username);
