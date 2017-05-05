@@ -15,7 +15,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelUuid;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -32,11 +31,8 @@ import java.util.Map;
 import java.util.Set;
 
 import io.github.teamargos.argos.Adapters.FulcrumListAdapter;
-import io.github.teamargos.argos.Models.DeviceStateChange;
 import io.github.teamargos.argos.Models.Fulcrum;
-import io.github.teamargos.argos.Models.StateChangeResponse;
 import io.github.teamargos.argos.Utils.HttpUtils;
-import io.github.teamargos.argos.Views.ArgosBaseActivity;
 
 public class FulcrumPairActivity extends ArgosBaseActivity {
     private static final String TAG = "FulcrumPairActivity";
@@ -52,6 +48,7 @@ public class FulcrumPairActivity extends ArgosBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fulcrum_pair);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setToolbarFont(toolbar, R.id.ToolbarTitle);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

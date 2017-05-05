@@ -5,10 +5,10 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="35dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/device_icon"/>
     <TextView
         android:layout_width="wrap_content"
@@ -17,6 +17,8 @@
         android:layout_alignParentTop="true"
         android:layout_margin="4dp"
         android:padding="2dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
         android:id="@+id/state"
         android:background="@drawable/device_state_bg"/>
     <TextView
@@ -25,6 +27,8 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="4dp"
+        android:paddingRight="10dp"
+        android:textSize="18sp"
         android:id="@+id/device_name"
         android:layout_alignParentBottom="true"/>
 </RelativeLayout>

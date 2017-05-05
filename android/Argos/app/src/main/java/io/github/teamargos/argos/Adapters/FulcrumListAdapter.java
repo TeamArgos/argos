@@ -51,7 +51,7 @@ public class FulcrumListAdapter extends BaseAdapter {
 
         Fulcrum f = this.fulcrumList.get(position);
         TextView id = (TextView) item.findViewById(R.id.fulcrum_id);
-        id.setText(f.id);
+        id.setText("Argos Fulcrum " + f.id);
 
         return item;
     }
