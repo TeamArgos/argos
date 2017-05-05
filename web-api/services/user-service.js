@@ -66,8 +66,9 @@ UserService.prototype.withinRange = function(userId, fulcrumId, radius) {
                 } else {
                     resolve(uip === fip);
                 }
+            } else {
+                resolve(false);
             }
-            resolve(false);
         });
     })
 }
