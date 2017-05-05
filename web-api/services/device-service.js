@@ -101,7 +101,10 @@ DeviceService.prototype.notifyStateBulk = function(devices, fulcrumId, isHome) {
 
 DeviceService.prototype.getDevices = function(uid) {
     return new Promise((resolve, reject) => {
-        var promises = [this.devices.once("value"), this.fulcrumMappings.child(uid).once("value")];
+        var promises = [
+            this.devices.once("value"),
+            this.fulcrumMappings.child("user").child(uid).once("value")
+        ];
         Promise.all(promises).then(responses => {
             var deviceList = responses[0].val();
             var mappings = responses[1].val();

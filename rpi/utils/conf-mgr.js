@@ -17,6 +17,7 @@ exports.startup = function() {
 
 // Only reload if this module has not yet been cached
 if (!exports.loaded) {
+    console.log("Loading config...");
     exports.startup();
     loadConfig();
     config.uid = getUserId();
