@@ -153,6 +153,7 @@ DeviceService.prototype.notifyStateBulk = function(devices, fulcrumId, isHome) {
 
 DeviceService.prototype.sendBatchNotifications = function(devices) {
     var notifications = [];
+    var tasks = [];
     for (let d of devices) {
         var classification = d.state.classification;
         var threshold = d.state.threshold / 100;
@@ -161,7 +162,6 @@ DeviceService.prototype.sendBatchNotifications = function(devices) {
             certainty = 1.0 - certainty;
         }
 
-        var tasks = [];
 
         if (certainty > threshold
             && ((classification.class === "on" && !classification.anomaly)
