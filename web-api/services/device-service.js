@@ -78,8 +78,10 @@ function setAttrs(device, classifier, extras) {
     var timestamp = (new Date()).getTime();
     if (!device.timestamp)
         device.timestamp = timestamp;
-    var classification = classifier.classify(device, timestamp, true);
-    device.classification = classification;
+    if (!device.classification) {
+        var classification = classifier.classify(device, timestamp, true);
+        device.classification = classification;
+    }
     if (extras) {
         for (var k in extras) {
             device[k] = extras[k];

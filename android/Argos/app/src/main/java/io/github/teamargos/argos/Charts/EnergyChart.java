@@ -67,7 +67,7 @@ public class EnergyChart extends ArgosBaseChart {
         xAxis.setTextColor(this.getColor(R.color.colorTextPrimary));
         xAxis.setLabelCount(5);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
-            private SimpleDateFormat mFormat = new SimpleDateFormat("MM/dd");
+            private SimpleDateFormat mFormat = new SimpleDateFormat("hh:mma");
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
@@ -103,6 +103,7 @@ public class EnergyChart extends ArgosBaseChart {
         float sum = 0f;
         int samples = 10;
         int interval = xvals.size() / samples;
+        if (interval == 0) interval = 1;
         for (int i = 0; i < xvals.size(); i++) {
             sum += yvals.get(i).floatValue();
             if (i % interval == 0) {

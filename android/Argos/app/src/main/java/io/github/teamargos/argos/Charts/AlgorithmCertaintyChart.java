@@ -68,8 +68,6 @@ public class AlgorithmCertaintyChart extends ArgosBaseChart {
             min = this.data.get(0).timestamp;
 
             for (Classification d : this.data) {
-                System.out.println(d.timestamp);
-                System.out.println(new Date(d.timestamp));
                 Entry e = new Entry(d.timestamp - min, d.certainty * 100f);
                 if (d.className.equals("on")) {
                     e.setY(100.0f - e.getY());
@@ -103,7 +101,6 @@ public class AlgorithmCertaintyChart extends ArgosBaseChart {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 long millis = ((long) value) + min;
-                System.out.println(new Date(millis));
                 return mFormat.format(new Date(millis));
             }
         });

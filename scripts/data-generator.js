@@ -1,16 +1,19 @@
 var dataTemplate = require("./device.json");
 var request = require("request");
+var ml = require('../web-api/ml');
+
+var classifier = new ml.Classifier();
 
 var minInWk = 60 * 24 * 7;
-var nWeeks = 0.015;
+var nWeeks = 0.017;
 var millisMin = 1000 * 60;
 var start = new Date();
 start.setTime(start.getTime() - (minInWk * nWeeks * millisMin));
 
 var baseUrl = "https://argosbackend.herokuapp.com"
-var fulcrumId = "9cb6d0d20179";
+var fulcrumId = process.argv[2] ? process.argv[2] : "9cb6d0d20179";
 
-var url = baseUrl + "/notify_state/9cb6d0d20179";
+var url = baseUrl + "/notify_state/" + fulcrumId;
 
 var devices = [
     {id: "00:17:88:01:00:d4:12:08-0a", name: "Hue Lamp 1"},
@@ -32,12 +35,10 @@ request.post(baseUrl + "/clear_classifiers", (err, res, body) => {
             obj.name = d.name;
 
             on = isOn(t);
-            r = Math.random();
-            if (r > 0.2) {
-                obj.state.on = on;
-            } else {
-                obj.state.on = !on;
-            }
+            obj.state.on = on;
+            var classification = classifier.classify(obj, i, true);
+            obj.classification = classification;
+            classifier.train(obj, obj.timestamp, true);
             reqDevices[d.id] = obj;
         }
         request.put(url, {json: reqDevices});
@@ -46,6 +47,7 @@ request.post(baseUrl + "/clear_classifiers", (err, res, body) => {
 
 function isOn(date) {
     var h = date.getHours();
-    var reasonableHour = h > 17 || (h > 7 && h < 9);
+    var reasonableHour = h % 2 === 0;
+    console.log(h, reasonableHour);
     return reasonableHour;
 }
