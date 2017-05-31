@@ -1,1 +1,1 @@
-git subtree push --prefix web-api heroku master
+git push heroku `git subtree split --prefix web-api master`:master --force

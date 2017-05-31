@@ -173,8 +173,9 @@ public class DashboardActivity extends DrawerActivity implements SwipeRefreshLay
     }
 
     public void setNotificationLimit() {
-        Device d = getSpinnerDevice();
-        setThresholdSingle(d);
+        for (Device d : devices) {
+            setThresholdSingle(d);
+        }
     }
 
     private void setThresholdSingle(Device d) {

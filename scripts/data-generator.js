@@ -48,6 +48,5 @@ request.post(baseUrl + "/clear_classifiers", (err, res, body) => {
 function isOn(date) {
     var h = date.getHours();
     var reasonableHour = h % 2 === 0;
-    console.log(h, reasonableHour);
     return reasonableHour;
 }
