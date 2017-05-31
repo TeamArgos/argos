@@ -1,0 +1,29 @@
+{
+  "name": "rpi",
+  "version": "1.0.0",
+  "description": "The argos module which runs on the in home device",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp prod",
+    "emulated": "gulp emulated",
+    "prod-backend": "gulp prod-backend"
+  },
+  "author": "argos",
+  "license": "ISC",
+  "dependencies": {
+    "bleno": "^0.4.2",
+    "body-parser": "^1.16.1",
+    "cron": "^1.2.1",
+    "express": "^4.14.1",
+    "minimist": "^1.2.0",
+    "node-cron": "^1.1.3",
+    "request": "^2.79.0",
+    "socket.io-client": "^1.7.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1",
+    "nodemon": "^1.11.0"
+  }
+}

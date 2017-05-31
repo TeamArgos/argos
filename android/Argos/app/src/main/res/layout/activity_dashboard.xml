@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_margin="0dp"
+    android:layout_width="match_parent"
+    android:background="@android:color/transparent"
+    android:layout_height="match_parent">
+    <!-- The main content view -->
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_margin="0dp"
+        android:background="@android:color/transparent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:background="@android:color/transparent"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/App.ToolbarTheme"
+                android:popupTheme="@style/PopupOverlay"
+                android:elevation="4dp">
+                <TextView
+                    android:text="@string/app_name"
+                    android:theme="@style/App.ToolbarText"
+                    android:layout_gravity="center"
+                    android:id="@+id/ToolbarTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </android.support.v7.widget.Toolbar>
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:layout_height="match_parent"
+                android:id="@+id/device_refresh"
+                android:layout_width="match_parent">
+                <ScrollView
+                    android:id="@+id/scroll"
+                    android:layout_width="match_parent"
+                    android:fillViewport="true"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:orientation="vertical"
+                        android:id="@+id/scrollChild"
+                        android:layout_height="match_parent">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="20sp"
+                                android:layout_marginLeft="35dp"
+                                android:textColor="@color/colorTextPrimary"
+                                android:id="@+id/chartHeader"
+                                android:text="Argos Light Score"
+                                android:layout_centerInParent="true"
+                                android:layout_alignParentStart="true"/>
+                            <ImageView
+                                android:id="@+id/infoIcon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_toRightOf="@+id/chartHeader"/>
+                        </RelativeLayout>
+
+                        <com.github.mikephil.charting.charts.LineChart
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:id="@+id/chart"/>
+                        <io.github.teamargos.argos.Views.ExpandableHeightGridView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/device_grid"
+                            android:stretchMode="columnWidth"
+                            android:verticalSpacing="10dp"
+                            android:horizontalSpacing="10dp"
+                            android:numColumns="2"
+                            android:isScrollContainer="false"
+                            android:background="@android:color/transparent"
+                            android:layout_gravity="center"/>
+                    </LinearLayout>
+                </ScrollView>
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </android.support.design.widget.AppBarLayout>
+    </FrameLayout>
+    <!-- The navigation drawer -->
+    <ListView android:id="@+id/left_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="@color/colorBackgroundDark"/>
+</android.support.v4.widget.DrawerLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorYellow">#EEBC50</color>
+
+    <color name="argosBlue">#4683B6</color>
+    <color name="colorBackgroundDark">#303030</color>
+    <color name="colorBackground">#4D4D4D</color>
+    <color name="colorTextPrimary">#FAFAFA</color>
+    <color name="colorDeviceTileOn">#95D4F5</color>
+    <color name="colorDeviceTileOff">#BDBDBD</color>
+    <color name="colorLightTransparentGrey">#BFe9e9e9</color>
+    <color name="colorRefLine">#e85c5c</color>
+
+    <color name="colorTextDull">#BFFFFFFF</color>
+    <color name="colorEditTransparent">#BFFFFFFF</color>
+    <color name="loginBgFilter">#80394e70</color>
+</resources>

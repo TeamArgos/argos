@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "9646149079",
+    "firebase_url": "https://argos-f950e.firebaseio.com",
+    "project_id": "argos-f950e",
+    "storage_bucket": "argos-f950e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9646149079:android:12f26bccb89fe1d3",
+        "android_client_info": {
+          "package_name": "io.github.teamargos.argos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9646149079-6tv02ggfpkomle4cot7ltdfnc0alhk7j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.github.teamargos.argos",
+            "certificate_hash": "c0d560b2979e493ed95760f2de3b08afa82c394b"
+          }
+        },
+        {
+          "client_id": "9646149079-i4sotju7d9u9pl2utij468hp1de21l1v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCd5cSU-wEgvUtrHvRhEJQ7I_sZs2jR-6o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9646149079-i4sotju7d9u9pl2utij468hp1de21l1v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

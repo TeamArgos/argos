@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:elevation="0dp"
+    tools:context="io.github.teamargos.argos.EnergyActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:elevation="0dp"
+        android:layout_margin="0dp"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/App.ToolbarTheme"
+            android:popupTheme="@style/PopupOverlay"
+            android:elevation="4dp">
+            <TextView
+                android:text="Setup"
+                android:theme="@style/App.ToolbarText"
+                android:layout_gravity="center"
+                android:id="@+id/ToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Before continuing please connect your fulcrum to your router. Then plug it into the wall."/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="376dp"
+                android:src="@drawable/fulcrum_plug"/>
+
+            <Button
+                android:id="@+id/continue_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I did that!"
+                style="?android:textAppearanceSmall"
+                android:layout_gravity="center"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:padding="17dp"
+                android:background="@drawable/login_btn_bg"
+                android:textColor="@color/colorTextPrimary"
+                android:textStyle="bold" />/>
+
+        </LinearLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+</LinearLayout>

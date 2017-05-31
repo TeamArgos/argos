@@ -1,0 +1,30 @@
+{
+  "bridge" : {
+    "id" : -1,
+    "make" : "hue",
+    "type" : "hub",
+    "url" : "http://127.0.0.1/api/newdeveloper",
+    "user" : "newdeveloper"
+  },
+  "fulcrumId" : "9cb6d0d20179",
+  "id" : "1",
+  "make" : "hue",
+  "modelid" : "LCT001",
+  "name" : "Hue Lamp 1",
+  "state" : {
+    "alert" : "none",
+    "bri" : 254,
+    "colormode" : "hs",
+    "ct" : 0,
+    "effect" : "none",
+    "hue" : 4444,
+    "on" : false,
+    "reachable" : true,
+    "sat" : 254,
+    "xy" : [ 0, 0 ]
+  },
+  "swversion" : "65003148",
+  "timestamp" : 1495910041040,
+  "type" : "lights",
+  "uniqueid" : "00:17:88:01:00:d4:12:08-0a"
+}
