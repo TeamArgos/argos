@@ -111,13 +111,13 @@ Device setup takes only a few minutes. To set up the fulcrum, the user simple pl
 
 Pairing a device is just as simple. Once the fulcrum is set up, the user will be prompted to set up devices. They just need to respond to a couple prompts and they're all done.
 
-See the GIF below to watch the whole process. In our tests, creating an account and pairing took ***under 30 seconds***. We are very proud of this accomplishment.
+See the video linked below to watch the whole process. In our tests, creating an account and pairing took ***under 30 seconds***. We are very proud of this accomplishment.
 
 <!--<img width="40%" style="margin: 2em;" src="screenshots/pairing/output.gif"/>-->
 
 In App Pairing: [Video Link](https://youtu.be/5N_Ac2cNn0A)
 
-Hardware setup:
+***Hardware setup***
 
 <!--<img width="40%" style="margin: 2em;" src="screenshots/hw-setup/output.gif"/>-->
 
@@ -149,8 +149,6 @@ Argos Light Score: [Video link](https://youtu.be/uutc--WNwk4)
 ### Actionable Notifications
 
 When Argos predicts that a device is in the wrong state, it will notify the user. From the notification, users can change the state of that device without opening the app.
-
-<img width="40%" style="margin: 2em;" src="screenshots/notifications/output.gif"/>
 
 Notifications: [Video link](https://youtu.be/9OufN6wQjyo)
 
