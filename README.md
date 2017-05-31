@@ -152,13 +152,13 @@ When Argos predicts that a device is in the wrong state, it will notify the user
 
 <img width="40%" style="margin: 2em;" src="screenshots/notifications/output.gif"/>
 
+Notifications: [Video link](https://youtu.be/9OufN6wQjyo)
+
 ### Energy Usage
 
 As an additional feature, we also provide charts that show energy usage over time (by cost) for all devices or for individual devices based on average energy prices in your area.
 
-<!--<img width="40%" style="margin: 2em;" src="screenshots/energy-usage.png"/>-->
-
-Notifications: [Video link](https://youtu.be/9OufN6wQjyo)
+<img width="40%" style="margin: 2em;" src="screenshots/energy-usage.png"/>
 
 ## Other developer information
 
