@@ -177,7 +177,6 @@ DeviceService.prototype.sendBatchNotifications = function(devices) {
                 
                 for (var uid in mappings) {
                     var u = uid;
-                    console.log(u);
                     tasks.push(this.sendNotification(u, notification));
                 }
             })

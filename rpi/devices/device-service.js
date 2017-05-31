@@ -18,30 +18,29 @@ function DeviceService() {
  * `Supported devices` in the argos documentation).
  * @returns a promise
  */
-DeviceService.prototype.discover = function() {
-    return new Promise((resolve, reject) => {
-        var promises = Object.keys(device_apis).map((key) => device_apis[key].discover());
-        Promise.all(promises).then((device_arr) => {
-            for(let make of device_arr) {
-                for (let id of Object.keys(make)) {
-                    this.devices[id] = make[id];
-                    this.devices[id].fulcrumId = config.getUid();
-                }
+DeviceService.prototype.discover = function(force) {
+    var promises = Object.keys(device_apis).map((key) => device_apis[key].discover());
+    return Promise.all(promises).then((device_arr) => {
+        for(let make of device_arr) {
+            for (let id of Object.keys(make)) {
+                this.devices[id] = make[id];
+                this.devices[id].fulcrumId = config.getUid();
             }
+        }
 
-            var currDate = new Date();
-            var sec = currDate.getSeconds();
+        var currDate = new Date();
+        var sec = currDate.getSeconds();
+        if (force || (sec >= 0 && sec <= 6)  || (sec >= 30 && sec <= 36)) {
             console.log(sec);
-            if (sec === 0 || sec === 30) {
-                this.api.notifyStateBatch(this.devices).then((res) => {
-                    resolve(this.devices);
-                }).catch(err => {
-                    console.log(err);
-                    reject(err);
-                });
-            }
-
-        })
+            this.api.notifyStateBatch(this.devices).then((res) => {
+                return Promise.resolve(this.devices);
+            }).catch(err => {
+                console.log("error to backend");
+                return Promise.reject(err);
+            });
+        }
+    }).catch(err => {
+        console.log(err);
     })
 }
 

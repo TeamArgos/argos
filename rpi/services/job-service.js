@@ -25,7 +25,7 @@ JobService.prototype.discover = function() {
  */
 JobService.prototype.runDiscoverJob = function() {
     var that = this;
-    this.discover(); // Needs to run immediately
+    this.discover(true); // Needs to run immediately
 
     // new CronJob('1 * * * * *', () => {
     //     this.discover();
@@ -33,8 +33,8 @@ JobService.prototype.runDiscoverJob = function() {
 
     // Checks every five seconds
     setInterval(function() {
-        that.discover();
-    }, 1000);
+        that.discover(true).catch(err => {/*do nothing*/});
+    }, 5000);
 }
 
 JobService.prototype.runSetStateJob = function() {
