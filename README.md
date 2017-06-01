@@ -26,7 +26,7 @@
 
 Argos is a system for controlling IoT devices (currently we support smart lighting). The Argos system will learn patterns in how users interact with their devices and notify the user when their device is in the wrong state.
 
-For example, it a light is left on and the light is normally off under those conditions (i.e. user is away from home at 4:30pm) then the user will get a notification that the light is on.
+For example, if a light is left on and the light is normally off under those conditions (i.e. user is away from home at 4:30pm) then the user will get a notification that the light is on.
 
 ### Problem
 
@@ -61,9 +61,9 @@ In our GitHub repo, this code is stored in the ***android*** subdirectory.
 
 ### In-home hub
 
-The hub, what we call the Argos Fulcrum, is a small computer that sits in your home, connected to your router. It handles communcation with IoT devices and makes requests to the [cloud backend](#cloud-backend). For our prototype, we ran this on a Raspberry Pi. Each minutes, the Fulcrum queries the state of every device in your home and reports this state to the cloud backend.
+The hub, what we call the Argos Fulcrum, is a small computer that sits in your home, connected to your router. It handles communcation with IoT devices and makes requests to the [cloud backend](#cloud-backend). For our prototype, we ran this on a Raspberry Pi. Each minute, the Fulcrum queries the state of every device in your home and reports this state to the cloud backend.
 
-The Fulcrum also listens for commands from the backend fo changing the state of devices. When the hub powers on, it sends a request to the backend with a unique identifier (tied to the hardware) to register to the backend that it can receive commands. It also opens a [bidirectional web socket](https://pusher.com/websockets) for communcation. If it turns off for any reason it simple deregisters from the backend. When it comes back online it will register again. This means that the backend does not need to know the IP address of the Fulcrum or any other information about the device. This also means that if the Fulcrum moves to a different house/state/country it will still work the exact same.
+The Fulcrum also listens for commands from the backend to change the state of devices. When the hub powers on, it sends a request to the backend with a unique identifier (tied to the hardware) to register to the backend that it can receive commands. It also opens a [bidirectional web socket](https://pusher.com/websockets) for communcation. If it turns off for any reason it simply deregisters from the backend. When it comes back online it will register again. This means that the backend does not need to know the IP address of the Fulcrum or any other information about the device. This also means that if the Fulcrum moves to a different house/state/country it will still work the exact same.
 
 The Fulcrum is written in node.js. We chose this language because of its ease of development. We were able to quickly write functioning code. It also has great HTTP client libraries which was important for writing a program that makes a lot of HTTP requests.
 
@@ -107,29 +107,21 @@ When users sign up for our app they only need to provide an email address and pa
 
 ### Fulcrum and Device Pairing
 
-Device setup takes only a few minutes. To set up the fulcrum, the user simple plugs it into power and plugs it into their home router via a provided ethernet cable. Then the open their app and are prompted to go through pairing. Pairing is done through a Bluetooth Low Energy Beacon, so they user simply has to stand near the fulcrum and it will appear as an option. Then they simply tap on it to pair.
+Device setup takes only a few minutes. To set up the fulcrum, the user simply plugs it into power and plugs it into their home router via a provided ethernet cable. Then they open their app and are prompted to go through pairing. Pairing is done through a Bluetooth Low Energy Beacon, so the user only has to stand near the fulcrum and it will appear as an option. Then they tap on it to pair.
 
 Pairing a device is just as simple. Once the fulcrum is set up, the user will be prompted to set up devices. They just need to respond to a couple prompts and they're all done.
 
 See the video linked below to watch the whole process. In our tests, creating an account and pairing took ***under 30 seconds***. We are very proud of this accomplishment.
 
-<!--<img width="40%" style="margin: 2em;" src="screenshots/pairing/output.gif"/>-->
-
 In App Pairing: [Video Link](https://youtu.be/5N_Ac2cNn0A)
 
 ***Hardware setup***
-
-<!--<img width="40%" style="margin: 2em;" src="screenshots/hw-setup/output.gif"/>-->
 
 Live Hardware Setup: [Video link](https://youtu.be/NvxzJDYTbS8)
 
 ### Controlling devices
 
 Once devices are paired with the Fulcrum, users can easily see and toggle the state of their devices from the dashboard screen. Tapping on the tile turns the devices on and off. There is little-to-no delay on the device actually changing state once the tile is pressed.
-
-<!--<div>
-  <img style="margin: 10px; padding: 5px;" width="40%" src="screenshots/device-toggle.gif"/><img width="50%" style="margin: 2em;padding-left: 5px;padding-bottom: 400px;" src="screenshots/toggle-live.gif"/>
-</div>-->
 
 Device Toggle - In App: [Video link](https://youtu.be/PL2qi55UV1c)
 
@@ -140,7 +132,6 @@ Device Toggle - Live: [Video link](https://youtu.be/bLpVH5-ZmGg)
 The argos light score is a number from 0 to 100 which represents how sure we are that your light should be ***off***. The light score chart on the dashboard has a red line that the user can move up and down. When the light score crosses that threshold set by that line, the user will receive a notification that their device is in the wrong state. We have also provided a small info alert that explains this concept to the user.
 
 <div>
-  <!--<img style="margin: 10px; padding: 5px;" width="40%" src="screenshots/lss.gif"/>-->
   <img width="40%" style="margin: 2em;padding: 5px;" src="screenshots/ls_alert.png"/>
 </div>
 
