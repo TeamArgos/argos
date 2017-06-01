@@ -97,7 +97,7 @@ In our GitHub repo, this code is stored in the ***energyscraper*** subdirectory.
 
 ## Features
 
-Because our project is for in-home use rather than a live site, each feature below is accompanied by screenshots and vieos to show that feature in action.
+Because our project is for in-home use rather than a live site, each feature below is accompanied by screenshots and videos to show that feature in action.
 
 ### Onboarding
 
