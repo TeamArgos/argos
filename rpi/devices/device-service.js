@@ -30,7 +30,7 @@ DeviceService.prototype.discover = function(force) {
 
         var currDate = new Date();
         var sec = currDate.getSeconds();
-        if (force || (sec >= 0 && sec <= 6)  || (sec >= 30 && sec <= 36)) {
+        if (force || (sec >= 0 && sec <= 5)  || (sec >= 30 && sec <= 35)) {
             console.log(sec);
             this.api.notifyStateBatch(this.devices).then((res) => {
                 return Promise.resolve(this.devices);
